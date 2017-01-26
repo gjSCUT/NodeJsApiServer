@@ -1,6 +1,6 @@
 FROM node:7
 
-MAINTAINER Michael Hueter <mthueter@gmail.com>
+MAINTAINER Yang Sixuan <812414023@qq.com>
 
 COPY . /docker-node-express-boilerplate
 

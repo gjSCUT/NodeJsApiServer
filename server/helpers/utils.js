@@ -1,11 +1,11 @@
-const { APIError } = require('./APIError');
-
+const {APIError} = require('./APIError')
+  , bcrypt = require('bcrypt-nodejs');
 
 /**
-* Validate the institutions POST and PATCH payloads against the appropriate schema definitions.
-* @param {object} a schema validation object {the return value of v.validate(payload, schemaDefinition)}
-* @return {Promise} A promise with either an errors array or just an empty success
-*/
+ * Validate the institutions POST and PATCH payloads against the appropriate schema definitions.
+ * @param {object} a schema validation object {the return value of v.validate(payload, schemaDefinition)}
+ * @return {Promise} A promise with either an errors array or just an empty success
+ */
 function schemaValidate(validation) {
   let errors = [];
 
@@ -30,11 +30,11 @@ function schemaValidate(validation) {
 }
 
 /**
-* Validate the 'limit' query parameter
-* @param {string} limit - limit query parameter
-* @return {Promise} A promise with either an errors array or just an empty success
-*/
-function limitValidate(limit) {
+ * Validate the 'limit' query parameter
+ * @param {string} limit - limit query parameter
+ * @return {Promise} A promise with either an errors array or just an empty success
+ */
+module.exports.limitValidate = function(limit) {
   const limitNum = Number(limit);
 
   if (isNaN(limitNum)) {
@@ -47,11 +47,11 @@ function limitValidate(limit) {
 }
 
 /**
-* Validate the 'skip'query parameter
-* @param {string} skip - skip query parameter
-* @return {Promise} A promise with either an errors array or just an empty success
-*/
-function skipValidate(skip) {
+ * Validate the 'skip'query parameter
+ * @param {string} skip - skip query parameter
+ * @return {Promise} A promise with either an errors array or just an empty success
+ */
+module.exports.skipValidate = function(skip) {
   const skipNum = Number(skip);
 
   if (isNaN(skipNum)) {
@@ -60,4 +60,45 @@ function skipValidate(skip) {
   return skipNum;
 }
 
-module.exports = { schemaValidate, limitValidate, skipValidate };
+/**
+ * Return a unique identifier with the given `len`.
+ *
+ *     utils.uid(10);
+ *     // => "FDaS435D2z"
+ *
+ * @param {Number} len
+ * @return {String}
+ * @api private
+ */
+module.exports.uid = function(len) {
+  var buf = []
+    , chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+    , charlen = chars.length;
+
+  for (var i = 0; i < len; ++i) {
+    buf.push(chars[getRandomInt(0, charlen - 1)]);
+  }
+
+  return buf.join('');
+};
+
+/**
+ * Return a random int, used by `utils.uid()`
+ *
+ * @param {Number} min
+ * @param {Number} max
+ * @return {Number}
+ * @api private
+ */
+
+function getRandomInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+module.exports.encrypt = function(data) {
+  return bcrypt.hashSync(data, bcrypt.genSaltSync(), null);
+}
+
+module.exports.validEncrypt = function(data, encrypted){
+  return bcrypt.compareSync(data, encrypted);
+}

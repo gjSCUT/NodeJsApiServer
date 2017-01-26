@@ -1,33 +1,46 @@
 /* npm packages */
+require('connect-mongo');
 const bodyParser = require('body-parser');
 const config = require('config');
 const express = require('express');
+const passport = require('passport');
+const cookieParser = require('cookie-parser');
+const session = require('express-session');
 const mongoose = require('mongoose');
 Promise = require('bluebird'); // eslint-disable-line no-native-reassign
 
 /* app imports */
-const { APIError, correlationId, errorHandler } = require('./helpers/APIError');
-const boilerplate = require('./routes/boilerplate');
-
+const {APIError, correlationId, errorHandler} = require('./helpers/APIError');
+const apiRoute = require('./routes/api');
+const authRoute = require('./routes/auth');
 
 /* global constants */
-const app = express();
+const server = express();
 
 /* --- Database --- */
 mongoose.Promise = Promise;
 mongoose.set('debug', true);
-const dbConfig = config.get('Boilerplate.dbConfig');
+const dbConfig = config.get('dbConfig');
 if (config.util.getEnv('NODE_ENV') !== 'standalone') {
   mongoose.connect(`mongodb://${dbConfig.host}/${dbConfig.name}`, dbConfig.options);
 }
 
 /* --- API middleware --- */
-
+server.set('view engine', 'ejs');
 // body parser setup
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+server.use(bodyParser.urlencoded({extended: true}));
+server.use(bodyParser.json());
+server.use(cookieParser());
+server.use(session({
+  secret: 'keyboard cat',
+  resave: true,
+  saveUninitialized: true
+}));
+server.use(passport.initialize());
+server.use(passport.session());
+
 // error handling specific to body parser only
-app.use((error, request, response, next) => {
+server.use((error, request, response, next) => {
   if (error instanceof SyntaxError || error instanceof TypeError) {
     // console.error(error);
     return next(new APIError(400, 'Bad Request', 'Malformed JSON.'));
@@ -35,8 +48,14 @@ app.use((error, request, response, next) => {
   return next();
 });
 
+require('./handlers/auth');
+//config api route
+server.use('/api', apiRoute);
+// config auth route
+server.use('/', authRoute);
+
 // response headers setup
-app.use((request, response, next) => {
+server.use((request, response, next) => {
   response.header('Access-Control-Allow-Origin', '*');
   response.header('Access-Control-Allow-Headers', 'Content-Type,Authorization,Correlation-Id');
   response.header('Access-Control-Allow-Methods', 'POST,GET,PATCH,DELETE');
@@ -46,14 +65,14 @@ app.use((request, response, next) => {
   return next();
 });
 
-app.use('/', boilerplate);
 /* Generic 404 error-maker for routes that do not contain resources */
-app.get('*', (request, response, next) => {
+server.get('*', (request, response, next) => {
   const err = new APIError(404, 'Resource Not Found.', `${request.path} is not valid path to a Boilerplate API resource.`);
   return next(err);
 });
-app.use(errorHandler);
 
-app.listen(5000, () => {
-  console.log('Boilerplate API express server is listening on port 5000...');
+server.use(errorHandler);
+
+server.listen(3000, () => {
+  console.log('API express server is listening on port 3000...');
 });

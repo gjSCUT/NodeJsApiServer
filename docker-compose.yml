@@ -19,7 +19,7 @@ services:
     links:
       - server
     ports:
-      - "80:80"
+      - "88:88"
     volumes:
       - ./config/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
 

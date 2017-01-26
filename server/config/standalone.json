@@ -1,14 +1,12 @@
 {
-	"Boilerplate": {
-		"dbConfig": {
-			"host": "",
-			"name": "",
-			"port": "",
-			"options": {
-				"user": "",
-				"pass": "",
-				"replset": ""
-			}
-		}
-	}
+  "dbConfig": {
+    "host": "",
+    "name": "",
+    "port": "",
+    "options": {
+      "user": "",
+      "pass": "",
+      "replset": ""
+    }
+  }
 }
