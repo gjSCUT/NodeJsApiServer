@@ -4,15 +4,17 @@ const bodyParser = require('body-parser');
 const config = require('config');
 const express = require('express');
 const passport = require('passport');
+const restful = require('node-restful');
+const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
-const mongoose = require('mongoose');
+require('./handlers/auth');
 Promise = require('bluebird'); // eslint-disable-line no-native-reassign
 
 /* app imports */
 const {APIError, correlationId, errorHandler} = require('./helpers/APIError');
-const apiRoute = require('./routes/api');
-const authRoute = require('./routes/auth');
+const apiRoute = require('./routes/api')
+  , authRoute = require('./routes/auth');
 
 /* global constants */
 const server = express();
@@ -22,7 +24,7 @@ mongoose.Promise = Promise;
 mongoose.set('debug', true);
 const dbConfig = config.get('dbConfig');
 if (config.util.getEnv('NODE_ENV') !== 'standalone') {
-  mongoose.connect(`mongodb://${dbConfig.host}/${dbConfig.name}`, dbConfig.options);
+  mongoose.connect(`mongodb://${dbConfig.host}:${dbConfig.port}/${dbConfig.name}`, dbConfig.options);
 }
 
 /* --- API middleware --- */
@@ -48,17 +50,15 @@ server.use((error, request, response, next) => {
   return next();
 });
 
-require('./handlers/auth');
-//config api route
-server.use('/api', apiRoute);
 // config auth route
 server.use('/', authRoute);
+server.use('/api', apiRoute);
 
 // response headers setup
 server.use((request, response, next) => {
   response.header('Access-Control-Allow-Origin', '*');
   response.header('Access-Control-Allow-Headers', 'Content-Type,Authorization,Correlation-Id');
-  response.header('Access-Control-Allow-Methods', 'POST,GET,PATCH,DELETE');
+  response.header('Access-Control-Allow-Methods', 'GET,POST,PATCH,DELETE');
   response.header('Access-Control-Expose-Headers', 'Correlation-Id');
   response.header('Correlation-Id', correlationId);
   response.header('Content-Type', 'application/json');

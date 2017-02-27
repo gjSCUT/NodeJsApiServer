@@ -32,7 +32,8 @@
     "passport-oauth2-client-password": "0.1.x",
     "bcrypt-nodejs": "0.0.3",
     "connect-ensure-login": "0.1.x",
-    "oauth2orize": "0.x.x"
+    "oauth2orize": "0.1.0",
+    "node-restful": "0.2.5"
   },
   "devDependencies": {
     "babel-eslint": "^7.1.1",

@@ -13,4 +13,4 @@ There are basic GET/POST/PATCH/DELETE endpoints and corresponding database metho
 0. Clone Repository `git clone git@github.com:mhueter/docker-node-express-boilerplate.git`
 1. Run `npm i`
 2. Run `docker-compose up` (Assuming you've installed docker for OSX/Windows or Docker toolkit)
-3. Server is accessible at `http://localhost:5000` if you have Docker for Windows or Mac. Use `http://localhost` without specifying the port to hit the NGINX proxy. If you are using Docker toolkit, you'll need to hit the IP of the docker-machine (port rules are the same.)
+3. Server is accessible at `http://localhost:3000` if you have Docker for Windows or Mac. Use `http://localhost` without specifying the port to hit the NGINX proxy. If you are using Docker toolkit, you'll need to hit the IP of the docker-machine (port rules are the same.)

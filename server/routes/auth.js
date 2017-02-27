@@ -1,5 +1,6 @@
 /* npm packages */
-const express = require('express');
+const express = require('express')
+  , config = require('config');
 
 /* app imports */
 const site = require('../handlers/site')
@@ -8,6 +9,12 @@ const site = require('../handlers/site')
 
 /* global constants */
 const router = new express.Router();
+
+router.route('/')
+  .get(function(req, res, next){
+    console.log('API express server');
+    return res.status(200).json('API express server');
+  });
 
 router.route('/user')
   .post(user.create);
