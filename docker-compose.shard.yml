@@ -1,5 +1,86 @@
 version: '2'
 services:
+    mongo-1-2:
+        container_name: "mongo-1-2"
+        image: mongo
+        ports:
+            - "30012:27017"
+        command: mongod --replSet rs1 --shardsvr --port 27017
+        restart: always
+
+    mongo-1-3:
+        container_name: "mongo-1-3"
+        image: mongo
+        ports:
+            - "30013:27017"
+        command: mongod --replSet rs1 --shardsvr --port 27017
+        restart: always
+
+    mongo-1-1:
+        container_name: "mongo-1-1"
+        image: mongo
+        ports:
+            - "30011:27017"
+        command: mongod --replSet rs1 --shardsvr --port 27017
+        links:
+            - mongo-1-2:mongo-1-2
+            - mongo-1-3:mongo-1-3
+        restart: always
+
+    mongo-2-2:
+        container_name: "mongo-2-2"
+        image: mongo
+        ports:
+            - "30022:27017"
+        command: mongod --replSet rs2 --shardsvr --port 27017
+        restart: always
+
+    mongo-2-3:
+        container_name: "mongo-2-3"
+        image: mongo
+        ports:
+            - "30023:27017"
+        command: mongod --replSet rs2 --shardsvr --port 27017
+        restart: always
+
+    mongo-2-1:
+        container_name: "mongo-2-1"
+        image: mongo
+        ports:
+            - "30021:27017"
+        command: mongod --replSet rs2 --shardsvr --port 27017
+        links:
+            - mongo-2-2:mongo-2-2
+            - mongo-2-3:mongo-2-3
+        restart: always
+
+    mongo-cnf-2:
+        container_name: "mongo-cnf-2"
+        image: mongo
+        ports:
+            - "30002:27017"
+        command: mongod --replSet cnf-serv --rest --configsvr --port 27017
+        restart: always
+
+    mongo-cnf-3:
+        container_name: "mongo-cnf-3"
+        image: mongo
+        ports:
+            - "30003:27017"
+        command: mongod --replSet cnf-serv --rest --configsvr --port 27017
+        restart: always
+
+    mongo-cnf-1:
+        container_name: "mongo-cnf-1"
+        image: mongo
+        ports:
+            - "30001:27017"
+        command: mongod --replSet cnf-serv --rest --configsvr --port 27017
+        links:
+            - mongo-cnf-2:mongo-cnf-2
+            - mongo-cnf-3:mongo-cnf-3
+        restart: always
+
     mongo-router:
         container_name: "mongo-router"
         image: mongo

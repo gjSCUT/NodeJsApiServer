@@ -12,8 +12,11 @@ const router = new express.Router();
 
 router.route('/')
   .get(function(req, res, next){
-    console.log('API express server');
-    return res.status(200).json('API express server');
+    console.log('Welcome to API server');
+    return res.status(200).json({
+      content: 'Welcome to API server',
+      copyright: 'Yang Sixuan'
+    });
   });
 
 router.route('/user')
@@ -22,11 +25,11 @@ router.route('/user')
 router.route('/user/:username')
   .get(user.get);
 
-router.route('/login')
+router.route('/user/login')
   .get(site.loginForm)
   .post(site.login);
 
-router.route('/logout')
+router.route('/user/logout')
   .get(site.logout);
 
 router.get('/dialog/authorize', oauth2.authorization);
