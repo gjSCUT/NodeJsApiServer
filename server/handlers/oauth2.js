@@ -28,6 +28,12 @@ var server = oauth2orize.createServer();
 // simple matter of serializing the client's ID, and deserializing by finding
 // the client by ID from the database.
 
+new Client({
+  clientId: "admin",
+  clientSecret: "123456",
+  name: "test_client"
+}).save();
+
 server.serializeClient(function(client, done) {
   return done(null, client._id);
 });
