@@ -19,10 +19,11 @@ services:
 
   lb:
     image: gjscut/loadbalance
-    depends_on:
+    build: config/consule
+    links:
       - api
     ports:
-      - "80:80"
+      - "88:80"
 
   consul:
     image: gliderlabs/consul-server:latest
@@ -35,7 +36,7 @@ services:
 
   registrator:
     image: gliderlabs/registrator:master
-    depends_on:
+    links:
       - consul
     command: -internal -resync 600 consul://consul:8500
     volumes:

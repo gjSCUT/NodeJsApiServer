@@ -67,7 +67,7 @@ server.use((request, response, next) => {
 
 /* Generic 404 error-maker for routes that do not contain resources */
 server.get('*', (request, response, next) => {
-  const err = new APIError(404, 'Resource Not Found.', `${request.path} is not valid path to a Boilerplate API resource.`);
+  const err = new APIError(404, 'Resource Not Found.', `${request.path} is not valid path to a API resource.`);
   return next(err);
 });
 
