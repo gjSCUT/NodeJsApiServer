@@ -9,7 +9,7 @@ var User = require('../models/user')
 module.exports.get = function(request, response, next) {
   const { username } = request.params;
   return User
-    .find(username)
+    .findOne({username:username})
     .then(user => response.json(user))
     .catch(error => next(error));
 }

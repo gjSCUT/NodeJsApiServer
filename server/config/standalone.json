@@ -1,0 +1,12 @@
+{
+  "dbConfig": {
+    "host": "",
+    "name": "",
+    "port": "",
+    "options": {
+      "user": "",
+      "pass": "",
+      "replset": ""
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "security": {
+    "tokenLife" : 3600
+  },
+  "dbConfig": {
+    "host": "mongodb",
+    "port": "27017",
+    "name": "boilerplate",
+    "options": {
+      "config": {
+        "autoIndex": true
+      }
+    }
+  }
+}

@@ -25,12 +25,13 @@ router.route('/user')
 router.route('/user/:username')
   .get(user.get);
 
-router.route('/user/login')
-  .get(site.loginForm)
+router.route('/login')
   .post(site.login);
-
-router.route('/user/logout')
+router.route('/login/status/:status')
+  .get(site.loginStatus)
+router.route('/logout')
   .get(site.logout);
+
 
 router.get('/dialog/authorize', oauth2.authorization);
 router.post('/dialog/authorize/decision', oauth2.decision);

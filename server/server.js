@@ -8,6 +8,10 @@ const restful = require('node-restful');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
+const fs = require('fs');
+const https = require('https');
+const http = require('http');
+
 require('./handlers/auth');
 Promise = require('bluebird'); // eslint-disable-line no-native-reassign
 
@@ -17,6 +21,10 @@ const apiRoute = require('./routes/api')
   , authRoute = require('./routes/auth');
 
 /* global constants */
+var options = {
+  pfx: fs.readFileSync('../keys/server.pfx'),
+  passphrase: 'guojun@123'
+};
 const server = express();
 
 /* --- Database --- */
@@ -73,6 +81,12 @@ server.get('*', (request, response, next) => {
 
 server.use(errorHandler);
 
-server.listen(3000, () => {
+const httpServer = http.createServer(server);
+const httpsServer = https.createServer(options, server);
+
+httpServer.listen(3000, () => {
   console.log('API express server is listening on port 3000...');
+});
+httpsServer.listen(3001, () => {
+  console.log('API express server is listening on port 3001...');
 });
