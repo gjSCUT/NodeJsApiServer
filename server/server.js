@@ -58,10 +58,6 @@ server.use((error, request, response, next) => {
   return next();
 });
 
-// config auth route
-server.use('/', authRoute);
-server.use('/api', apiRoute);
-
 // response headers setup
 server.use((request, response, next) => {
   response.header('Access-Control-Allow-Origin', '*');
@@ -72,6 +68,10 @@ server.use((request, response, next) => {
   response.header('Content-Type', 'application/json');
   return next();
 });
+
+// config auth route
+server.use('/', authRoute);
+server.use('/api', apiRoute);
 
 /* Generic 404 error-maker for routes that do not contain resources */
 server.get('*', (request, response, next) => {
