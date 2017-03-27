@@ -30,9 +30,12 @@ var server = oauth2orize.createServer();
 
 new Client({
   clientId: "admin",
-  clientSecret: "123456",
-  name: "test_client"
+  clientSecret: '123456',
+  name: 'test',
+  isTrust: true
 }).save();
+//Client.findOneAndUpdate({clientId: "admin"}, {isTrust: true});
+
 
 server.serializeClient(function(client, done) {
   return done(null, client._id);
@@ -173,6 +176,8 @@ server.exchange(oauth2orize.exchange.refreshToken(function(client, refreshToken,
       });
     } else if (client.isTrust) {
       createTokenWithoutUser(client._id, done);
+    } else {
+      return done(null, false, {message: 'Wrong refreshtoken'});
     }
   });
  }));

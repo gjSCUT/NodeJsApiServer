@@ -5,21 +5,29 @@ var Types = mongoose.Schema.Types;
 
 PumpRoomOut = restful.model('PumpRoomOut',
   new mongoose.Schema({
-    created: {type: Date, default: Date.now, index: true },
-    ph: {type: Number},
-    waterTemperature: {type: Number},
-    turbidity: {type: Number},
-    amlN2: {type: Number},
-    COD: {type: Number},
-    TOC: {type: Number},
+    phIn: {type: Number, required: true},
+    waterTemperIn: {type: Number, required: true},
+    turbidityIn: {type: Number, required: true},
+    amlN2In: {type: Number, required: true},
+    codIn: {type: Number, required: true},
+    tocIn: {type: Number, required: true},
     flowIn: {type: Number, required: true},
+    phOut: {type: Number, required: true},
+    waterTemperOut: {type: Number, required: true},
+    turbidityOut: {type: Number, required: true},
+    amlN2Out: {type: Number, required: true},
+    codOut: {type: Number, required: true},
+    tocOut: {type: Number, required: true},
     flowOut: {type: Number, required: true},
     pumps: [{
-      _id: {type:Types.ObjectId, required: true},
+      order: {type: Number, required: true},
       frequency: Number,
       head: Number,
       flow: Number
     }]
+  }, {
+    versionKey: false,
+    timestamps: { createdAt: 'createTime', updatedAt: 'updateTime' }
   }))
   .methods(['get', 'post', 'put', 'delete'])
   .before('get', passport.authenticate('bearer', { session: false }))

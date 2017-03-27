@@ -13,7 +13,7 @@ services:
     external_links:
       - mongo-router:mongodb
     ports:
-      - "3000"
+      - "3000:3000"
     volumes:
       - .:/docker-node-express-boilerplate
 

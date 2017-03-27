@@ -97,7 +97,7 @@ passport.use(new BearerStrategy(
       }
 
       if (token.username != null) {
-        User.findOne({username: username}, function(err, user) {
+        User.findOne({username: token.username}, function(err, user) {
           if (err) { return done(err); }
           if (!user) { return done(null, false, { message: 'Unknow User' }); }
           return done(null, user, { scope: '*' });
