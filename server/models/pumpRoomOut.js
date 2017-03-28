@@ -20,7 +20,7 @@ PumpRoomOut = restful.model('PumpRoomOut',
     tocOut: {type: Number, required: true},
     flowOut: {type: Number, required: true},
     pumps: [{
-      order: {type: Number, required: true},
+      order: {type: Number, unique: true, required: true},
       frequency: Number,
       head: Number,
       flow: Number
@@ -28,7 +28,7 @@ PumpRoomOut = restful.model('PumpRoomOut',
   }, {
     versionKey: false,
     timestamps: { createdAt: 'createTime', updatedAt: 'updateTime' }
-  }))
+  }).index({createTime: -1}))
   .methods(['get', 'post', 'put', 'delete'])
   .before('get', passport.authenticate('bearer', { session: false }))
   .before('post', passport.authenticate('bearer', { session: false }))

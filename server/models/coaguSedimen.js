@@ -22,7 +22,7 @@ CoaguSedimen = restful.model('CoaguSedimen',
   }, {
     versionKey: false,
     timestamps: { createdAt: 'createTime', updatedAt: 'updateTime' }
-  }))
+  }).index({createTime: -1}))
   .methods(['get', 'post', 'put', 'delete'])
   .before('get', passport.authenticate('bearer', { session: false }))
   .before('post', passport.authenticate('bearer', { session: false }))
