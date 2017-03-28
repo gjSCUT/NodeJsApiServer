@@ -19,7 +19,7 @@ const pumpRoomSecond = require('../models/pumpRoomSecond');
 const pumpRoomOut = require('../models/pumpRoomOut');
 
 thing.register(router, '/things');
-distributeWell.register(router, '/activatedCarbonPool');
+distributeWell.register(router, '/distributeWell');
 combinedWell.register(router, '/combinedWell');
 suctionWell.register(router, '/suctionWell');
 activatedCarbonPool.register(router, '/activatedCarbonPool');
