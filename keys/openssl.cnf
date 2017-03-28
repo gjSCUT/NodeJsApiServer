@@ -3,15 +3,15 @@
     req_extensions = v3_req  
   
     [req_distinguished_name]  
-    countryName = CN  
+    countryName = Country Name (2 letter code)  
     countryName_default = CN  
-    stateOrProvinceName = Yang Sixuan  
-    stateOrProvinceName_default = NanJing  
-    localityName = NanJing  
-    localityName_default = NanJing
-    organizationalUnitName = NUPTNUPT 
-    organizationalUnitName_default  = Domain Control Validated  
-    commonName = Internet Widgits Ltd  
+    stateOrProvinceName = State or Province Name (full name)  
+    stateOrProvinceName_default = Nan Jing 
+    localityName = Locality Name (eg, city)  
+    localityName_default = Nan You  
+    organizationalUnitName  = Organizational Unit Name (eg, section)  
+    organizationalUnitName_default  = IT  
+    commonName = Yang Sixuan 
     commonName_max  = 64  
   
     [ v3_req ]  
@@ -21,6 +21,6 @@
     subjectAltName = @alt_names  
   
     [alt_names]  
-    #注意这个IP.1的设置，IP地址需要和你的服务器的监听地址一样
+	#注意这个IP.1的设置，IP地址需要和你的服务器的监听地址一样
     IP.1 = 121.196.207.208
     IP.2 = 127.0.0.1

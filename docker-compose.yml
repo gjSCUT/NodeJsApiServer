@@ -17,6 +17,23 @@ services:
     volumes:
       - .:/docker-node-express-boilerplate
 
+  apiSSL:
+    build: .
+    command: pm2-docker --watch server/server.js
+    image: dockernodeexpressboilerplate_api
+    environment:
+      SERVICE_NAME: apiSSL
+      SERVICE_TAGS: development
+      NODE_ENV: development
+      NODE_CONFIG_DIR: ./config
+      NODE_APP_INSTANCE: ''
+    external_links:
+      - mongo-router:mongodb
+    ports:
+      - "443:3001"
+    volumes:
+      - .:/docker-node-express-boilerplate
+
   lb:
     image: gjscut/loadbalance
     build: config/consule

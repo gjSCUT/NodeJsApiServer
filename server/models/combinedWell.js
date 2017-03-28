@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const restful = require('node-restful');
 const passport = require('passport');
 
-CoaguSedimen = restful.model('CoaguSedimen',
+CombinedWell = restful.model('CombinedWell',
   new mongoose.Schema({
     phIn: {type: Number, required: true},
     waterTemperIn: {type: Number, required: true},
@@ -17,8 +17,7 @@ CoaguSedimen = restful.model('CoaguSedimen',
     amlN2Out: {type: Number},
     codOut: {type: Number},
     tocOut: {type: Number},
-    flowOut: {type: Number},
-    alumAmount: {type: Number, required: true}
+    flowOut: {type: Number}
   }, {
     versionKey: false,
     timestamps: { createdAt: 'createTime', updatedAt: 'updateTime' }
@@ -29,4 +28,4 @@ CoaguSedimen = restful.model('CoaguSedimen',
   .before('put', passport.authenticate('bearer', { session: false }))
   .before('delete', passport.authenticate('bearer', { session: false }));
 
-module.exports = CoaguSedimen;
+module.exports = CombinedWell;
