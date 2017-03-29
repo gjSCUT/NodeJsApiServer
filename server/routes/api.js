@@ -25,7 +25,7 @@ suctionWell.register(router, '/suctionWell');
 activatedCarbonPool.register(router, '/activatedCarbonPool');
 depositPool.register(router, '/depositPool');
 sandLeachPool.register(router, '/sandLeachPool');
-coagulatePool.register(router, '/coaguSedimen');
+coagulatePool.register(router, '/coagulatePool');
 chlorineAddPool.register(router, '/chlorineAddPool');
 ozonePoolAdvance.register(router, '/ozonePoolAdvance');
 ozonePoolMain.register(router, '/ozonePoolMain');

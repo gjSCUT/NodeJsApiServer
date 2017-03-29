@@ -20,7 +20,7 @@ PumpRoomSecond = restful.model('PumpRoomSecond',
     tocOut: {type: Number},
     flowOut: {type: Number},
     pumps: [{
-      order: {type: Number, unique: true, required: true},
+      order: {type: Number, required: true},
       frequency: Number,
       head: Number,
       flow: Number
