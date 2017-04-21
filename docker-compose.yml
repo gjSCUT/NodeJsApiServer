@@ -1,9 +1,8 @@
 version: '3'
 services:
   api:
-    build: .
     command: pm2-docker --watch server/server.js
-    image: dockernodeexpressboilerplate_api
+    image: gjscut/water_watcher_api_server
     environment:
       SERVICE_NAME: api
       SERVICE_TAGS: development
@@ -18,9 +17,8 @@ services:
       - .:/docker-node-express-boilerplate
 
   apiSSL:
-    build: .
     command: pm2-docker --watch server/server.js
-    image: dockernodeexpressboilerplate_api
+    image: gjscut/water_watcher_api_server
     environment:
       SERVICE_NAME: apiSSL
       SERVICE_TAGS: development
