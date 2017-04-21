@@ -20,10 +20,12 @@ router.route('/')
   });
 
 router.route('/user')
-  .post(user.create);
+  .post(user.create)
+  .patch(user.changePassword);
 
 router.route('/user/:username')
-  .get(user.get);
+  .get(user.get)
+  .delete(user.delete);
 
 router.route('/login')
   .post(site.login);
