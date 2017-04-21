@@ -23,7 +23,7 @@ module.exports.loginStatus = function(req, res) {
     if (req.session.passport) {
       res.status(230).json('logining');
     } else {
-      res.status(401).json('no login');
+      res.status(403).json('no login');
     }
   } else if (status === 'success'){
     res.status(200).json('login success');

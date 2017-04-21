@@ -34,7 +34,24 @@ new Client({
   name: 'test',
   isTrust: true
 }).save();
-//Client.findOneAndUpdate({clientId: "admin"}, {isTrust: true});
+new Client({
+  clientId: "android",
+  clientSecret: '123456',
+  name: 'android client',
+  isTrust: true
+}).save();
+new Client({
+  clientId: "c#",
+  clientSecret: '123456',
+  name: 'c# client',
+  isTrust: true
+}).save();
+new Client({
+  clientId: "web",
+  clientSecret: '123456',
+  name: 'web client',
+  isTrust: true
+}).save();
 
 
 server.serializeClient(function(client, done) {
@@ -158,7 +175,7 @@ server.exchange(oauth2orize.exchange.refreshToken(function(client, refreshToken,
   Refreshtoken.findOne({ value: refreshToken }, function(err, token) {
     if (err) { return done(err); }
     if (!token) { return done(null, false, { message: 'Refreshtoken wrong' }); }
-    if( Math.round((Date.now()-token.created) / 1000) > config.get('security').tokenLife * 24 * 7 ) {
+    if( Math.round((Date.now()-token.created) / 1000) > config.get('security').tokenLife * 24) {
       Accesstoken.remove({ value: accessToken }, function (err) {
         if (err) return done(err);
       });
