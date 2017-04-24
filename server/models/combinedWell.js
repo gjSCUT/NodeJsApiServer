@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const restful = require('node-restful');
 const passport = require('passport');
 
-CombinedWell = restful.model('CombinedWell',
+var CombinedWell = restful.model('CombinedWell',
   new mongoose.Schema({
     phIn: {type: Number, required: true},
     waterTemperIn: {type: Number, required: true},
@@ -24,8 +24,25 @@ CombinedWell = restful.model('CombinedWell',
   }).index({createTime: -1}))
   .methods(['get', 'post', 'put', 'delete'])
   .before('get', passport.authenticate('bearer', { session: false }))
+  .before('get', function(req, res, next) {
+    if (CombinedWell.lasted != null && req.query.limit === "1" && req.query.sort === "-createTime") {
+      return res.status(200).json([CombinedWell.lasted]);
+    } else {
+      return next();
+    }
+  })
   .before('post', passport.authenticate('bearer', { session: false }))
+  .before('post', function(req, res, next) {
+    return CombinedWell
+      .create(new CombinedWell(req.body))
+      .then(model => {
+        CombinedWell.lasted = model;
+        return res.status(201).json(model)
+      })
+      .catch(error => next(error));
+  })
   .before('put', passport.authenticate('bearer', { session: false }))
   .before('delete', passport.authenticate('bearer', { session: false }));
+CombinedWell.lasted = null;
 
 module.exports = CombinedWell;

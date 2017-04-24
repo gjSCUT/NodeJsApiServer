@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const restful = require('node-restful');
 const passport = require('passport');
 
-ChlorineAddPool = restful.model('ChlorineAddPool',
+var ChlorineAddPool = restful.model('ChlorineAddPool',
   new mongoose.Schema({
     phIn: {type: Number, required: true},
     waterTemperIn: {type: Number, required: true},
@@ -25,8 +25,25 @@ ChlorineAddPool = restful.model('ChlorineAddPool',
   }).index({createTime: -1}))
   .methods(['get', 'post', 'put', 'delete'])
   .before('get', passport.authenticate('bearer', { session: false }))
+  .before('get', function(req, res, next) {
+    if (ChlorineAddPool.lasted != null && req.query.limit === "1" && req.query.sort === "-createTime") {
+      return res.status(200).json([ChlorineAddPool.lasted]);
+    } else {
+      return next();
+    }
+  })
   .before('post', passport.authenticate('bearer', { session: false }))
+  .before('post', function(req, res, next) {
+    return ChlorineAddPool
+      .create(new ChlorineAddPool(req.body))
+      .then(model => {
+        ChlorineAddPool.lasted = model;
+        return res.status(201).json(model)
+      })
+      .catch(error => next(error));
+  })
   .before('put', passport.authenticate('bearer', { session: false }))
   .before('delete', passport.authenticate('bearer', { session: false }));
+ChlorineAddPool.lasted = null;
 
 module.exports = ChlorineAddPool;

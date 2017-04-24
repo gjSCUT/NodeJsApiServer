@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const restful = require('node-restful');
 const passport = require('passport');
 
-CoagulatePool = restful.model('CoagulatePool',
+var CoagulatePool = restful.model('CoagulatePool',
   new mongoose.Schema({
     phIn: {type: Number, required: true},
     waterTemperIn: {type: Number, required: true},
@@ -25,8 +25,25 @@ CoagulatePool = restful.model('CoagulatePool',
   }).index({createTime: -1}))
   .methods(['get', 'post', 'put', 'delete'])
   .before('get', passport.authenticate('bearer', { session: false }))
+  .before('get', function(req, res, next) {
+    if (CoagulatePool.lasted != null && req.query.limit === "1" && req.query.sort === "-createTime") {
+      return res.status(200).json([CoagulatePool.lasted]);
+    } else {
+      return next();
+    }
+  })
   .before('post', passport.authenticate('bearer', { session: false }))
+  .before('post', function(req, res, next) {
+    return CoagulatePool
+      .create(new CoagulatePool(req.body))
+      .then(model => {
+        CoagulatePool.lasted = model;
+        return res.status(201).json(model)
+      })
+      .catch(error => next(error));
+  })
   .before('put', passport.authenticate('bearer', { session: false }))
   .before('delete', passport.authenticate('bearer', { session: false }));
+CoagulatePool.lasted = null;
 
 module.exports = CoagulatePool;

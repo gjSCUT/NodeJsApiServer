@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const restful = require('node-restful');
 const passport = require('passport');
 
-OzonePoolMain = restful.model('OzonePoolMain',
+var OzonePoolMain = restful.model('OzonePoolMain',
   new mongoose.Schema({
     phIn: {type: Number, required: true},
     waterTemperIn: {type: Number, required: true},
@@ -25,8 +25,25 @@ OzonePoolMain = restful.model('OzonePoolMain',
   }).index({createTime: -1}))
   .methods(['get', 'post', 'put', 'delete'])
   .before('get', passport.authenticate('bearer', { session: false }))
+  .before('get', function(req, res, next) {
+    if (OzonePoolMain.lasted != null && req.query.limit === "1" && req.query.sort === "-createTime") {
+      return res.status(200).json([OzonePoolMain.lasted]);
+    } else {
+      return next();
+    }
+  })
   .before('post', passport.authenticate('bearer', { session: false }))
+  .before('post', function(req, res, next) {
+    return OzonePoolMain
+      .create(new OzonePoolMain(req.body))
+      .then(model => {
+        OzonePoolMain.lasted = model;
+        return res.status(201).json(model)
+      })
+      .catch(error => next(error));
+  })
   .before('put', passport.authenticate('bearer', { session: false }))
   .before('delete', passport.authenticate('bearer', { session: false }));
+OzonePoolMain.lasted = null;
 
 module.exports = OzonePoolMain;

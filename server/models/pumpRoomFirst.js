@@ -3,7 +3,7 @@ const restful = require('node-restful');
 const passport = require('passport');
 var Types = mongoose.Schema.Types;
 
-PumpRoomFirst = restful.model('PumpRoomFirst',
+var PumpRoomFirst = restful.model('PumpRoomFirst',
   new mongoose.Schema({
     phIn: {type: Number, required: true},
     waterTemperIn: {type: Number, required: true},
@@ -31,8 +31,25 @@ PumpRoomFirst = restful.model('PumpRoomFirst',
   }).index({createTime: -1}))
   .methods(['get', 'post', 'put', 'delete'])
   .before('get', passport.authenticate('bearer', { session: false }))
+  .before('get', function(req, res, next) {
+    if (PumpRoomFirst.lasted != null && req.query.limit === "1" && req.query.sort === "-createTime") {
+      return res.status(200).json([PumpRoomFirst.lasted]);
+    } else {
+      return next();
+    }
+  })
   .before('post', passport.authenticate('bearer', { session: false }))
+  .before('post', function(req, res, next) {
+    return PumpRoomFirst
+      .create(new PumpRoomFirst(req.body))
+      .then(model => {
+        PumpRoomFirst.lasted = model;
+        return res.status(201).json(model)
+      })
+      .catch(error => next(error));
+  })
   .before('put', passport.authenticate('bearer', { session: false }))
   .before('delete', passport.authenticate('bearer', { session: false }));
+PumpRoomFirst.lasted = null;
 
 module.exports = PumpRoomFirst;
