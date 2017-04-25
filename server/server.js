@@ -11,8 +11,8 @@ const session = require('express-session');
 const fs = require('fs');
 const https = require('https');
 const http = require('http');
+const RedisStore = require('connect-redis')(session);
 
-require('./handlers/auth');
 Promise = require('bluebird'); // eslint-disable-line no-native-reassign
 
 /* app imports */
@@ -42,6 +42,7 @@ server.use(bodyParser.urlencoded({extended: true}));
 server.use(bodyParser.json());
 server.use(cookieParser());
 server.use(session({
+  store: new RedisStore(options),
   secret: 'keyboard cat',
   resave: true,
   saveUninitialized: true

@@ -8,17 +8,15 @@ const passport = require('passport')
   , BearerStrategy = require('passport-http-bearer').Strategy
   , utils = require('../helpers/utils')
   , config = require('config');
-const redis = require("redis"),
-  client = redis.createClient();
-
-
+const redisModule = require('redis'),
+  redis = redisModule.createClient();
 
 passport.serializeUser(function(user, done) {
   done(null, user.username);
 });
 
 passport.deserializeUser(function(username, done) {
-  client.hgetall('user:' + username, function(err, user) {
+  redis.hgetall('user:' + username, function(err, user) {
     if (err) { return done(err); }
     if (!user) { return done(null, false, { message: 'Unknow User' }); }
     return done(null, user);
@@ -34,7 +32,7 @@ passport.deserializeUser(function(username, done) {
  */
 passport.use(new LocalStrategy(
   function(username, password, done) {
-    client.hgetall('user:' + username, function(err, user) {
+    redis.hgetall('user:' + username, function(err, user) {
       if (err) { return done(err); }
       if (!user) { return done(null, false, { message: 'Unknow User' }); }
       if (!utils.validEncrypt(password, user.password)) { return done(null, false); }
@@ -56,7 +54,7 @@ passport.use(new LocalStrategy(
  */
 passport.use(new BasicStrategy(
   function(clientId, clientSecret, done) {
-    client.hgetall('client:' + clientId, function(err, client) {
+    redis.hgetall('client:' + clientId, function(err, client) {
       if (err) { return done(err); }
       if (!client) { return done(null, false, { message: 'Unknow Client' }); }
       if (client.clientSecret != clientSecret) { return done(null, false); }
@@ -67,7 +65,7 @@ passport.use(new BasicStrategy(
 
 passport.use(new ClientPasswordStrategy(
   function(clientId, clientSecret, done) {
-    client.hgetall('client:' + clientId, function(err, client) {
+    redis.hgetall('client:' + clientId, function(err, client) {
       if (err) { return done(err); }
       if (!client) { return done(null, false, { message: 'Unknow Client' }); }
       if (client.clientSecret != clientSecret) { return done(null, false); }
@@ -86,24 +84,24 @@ passport.use(new ClientPasswordStrategy(
  */
 passport.use(new BearerStrategy(
   function(accessToken, done) {
-    client.hgetall('accessToken:' + accessToken, function(err, token) {
+    redis.hgetall('accessToken:' + accessToken, function(err, token) {
       if (err) { return done(err); }
       if (!token) { return done(null, false); }
       if( Math.round((Date.now()-token.created) / 1000) > config.get('security').tokenLife ) {
-        client.del('accessToken:' + accessToken, function(err){
+        redis.del('accessToken:' + accessToken, function(err){
           if (err) return done(err);
         });
         return done(null, false, { message: 'Token expired' });
       }
 
       if (token.username != null) {
-        client.hgetall('user:' + token.username, function(err, user) {
+        redis.hgetall('user:' + token.username, function(err, user) {
           if (err) { return done(err); }
           if (!user) { return done(null, false, { message: 'Unknow User' }); }
           return done(null, user, { scope: '*' });
         });
       } else {
-        client.hgetall('client:' + token.clientId, function(err, client) {
+        redis.hgetall('client:' + token.clientId, function(err, client) {
           if(err) { return done(err); }
           if(!client) { return done(null, false, { message: 'Unknow Client' }); }
           done(null, client, { scope: '*' });

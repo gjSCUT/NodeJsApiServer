@@ -5,9 +5,10 @@ const oauth2orize = require('oauth2orize')
   , passport = require('passport')
   , login = require('connect-ensure-login')
   , utils = require('../helpers/utils')
-  , config = require('config');
-const redis = require("redis"),
-  client = redis.createClient();
+  , config = require('config')
+  , Client = require('../models/client');
+const redisModule = require('redis'),
+  redis = redisModule.createClient();
 
 // create OAuth 2.0 server
 var server = oauth2orize.createServer();
@@ -26,29 +27,53 @@ var server = oauth2orize.createServer();
 // the client by ID from the database.
 
 new Client({
-  clientId: "admin",
+  clientId: 'admin',
   clientSecret: '123456',
   name: 'test',
   isTrust: true
 }).save();
 new Client({
-  clientId: "android",
+  clientId: 'android',
   clientSecret: '123456',
-  name: 'android client',
-  isTrust: true
+  name: 'android client'
 }).save();
 new Client({
-  clientId: "c#",
+  clientId: 'c#',
   clientSecret: '123456',
-  name: 'c# client',
-  isTrust: true
+  name: 'c# client'
 }).save();
 new Client({
-  clientId: "web",
+  clientId: 'web',
   clientSecret: '123456',
-  name: 'web client',
-  isTrust: true
+  name: 'web client'
 }).save();
+
+redis.hmset('client:admin', {
+  clientId: 'admin',
+  clientSecret: '123456',
+  name: 'test',
+  isTrust: true
+}, function(err) { if (err) { return done(err); }});
+redis.hmset('client:android', {
+  clientId: 'android',
+  clientSecret: '123456',
+  name: 'android client'
+}, function(err) { if (err) { return done(err); }});
+redis.hmset('client:c#', {
+  clientId: 'c#',
+  clientSecret: '123456',
+  name: 'c# client'
+}, function(err) { if (err) { return done(err); }});
+redis.hmset('client:web', {
+  clientId: 'web',
+  clientSecret: '123456',
+  name: 'web client'
+}, function(err) { if (err) { return done(err); }});
+redis.hmset('user:admin', {
+  username: 'admin',
+  password: utils.encrypt('admin'),
+  name: 'test'
+}, function(err) { if (err) { return done(err); }});
 
 
 server.serializeClient(function(client, done) {
@@ -56,7 +81,7 @@ server.serializeClient(function(client, done) {
 });
 
 server.deserializeClient(function(id, done) {
-  client.hgetall('client:' + id, function(err, client) {
+  redis.hgetall('client:' + id, function(err, client) {
     if (err) { return done(err); }
     return done(null, client);
   });
@@ -78,15 +103,15 @@ server.deserializeClient(function(id, done) {
 
 server.grant(oauth2orize.grant.code(function(client, redirectURI, user, ares, done) {
   // clear this user token
-  client.get('accessToken:' + username + clientId, function(err, tokenValue) {
-    if (err) return done(err);
-    client.hdel('accessToken:' + tokenValue, function(err) {
-      if (err) return done(err);
+  redis.get('accessToken:' + username + clientId, function(err, tokenValue) {
+    if (err) return;
+    redis.hdel('accessToken:' + tokenValue, ['value', 'clientId', 'username'], function(err) {
+      if (err) done(err);
     });
   });
-  client.get('refreshToken:' + username + clientId, function(err, tokenValue) {
-    if (err) return done(err);
-    client.hdel('refreshToken:' + username + clientId, function(err) {
+  redis.get('refreshToken:' + username + clientId, function(err, tokenValue) {
+    if (err) return;
+    redis.hdel('refreshToken:' + tokenValue, ['value', 'clientId', 'username'], function(err) {
       if (err) return done(err);
     });
   });
@@ -96,7 +121,7 @@ server.grant(oauth2orize.grant.code(function(client, redirectURI, user, ares, do
     username: user.username,
     redirectUri: redirectURI
   };
-  client.hmset('code:' + code.value, code, function(err) {
+  redis.hmset('code:' + code.value, code, function(err) {
     if (err) { return done(err); }
     done(null, code.value);
   });
@@ -120,14 +145,14 @@ server.grant(oauth2orize.grant.token(function(client, user, ares, done) {
 // code.
 
 server.exchange(oauth2orize.exchange.code(function(client, codeValue, redirectURI, done) {
-  client.hgetall('code:' + codeValue, function(err, code) {
+  redis.hgetall('code:' + codeValue, function(err, code) {
     if (err) { return done(err); }
     if (code === null) { return done(null, false, { message: 'Code wrong' }); }
     if (client.clientId !== code.clientId) { return done(null, false, { message: 'Client not match' }); }
     if (redirectURI !== code.redirectURI) { return done(null, false, { message: 'RedirectUri not match' }); }
     // Delete auth code now that it has been used
-    client.hdel('code:' + codeValue, function(err) {
-      if (err) return done(err);
+    redis.hdel('code:' + codeValue, ['value', 'clientId', 'username', 'redirectUri'], function(err) {
+      if (err) done(err);
       removeAndCreateToken(code.username, code.clientId, done);
     });
   });
@@ -140,14 +165,14 @@ server.exchange(oauth2orize.exchange.code(function(client, codeValue, redirectUR
 
 server.exchange(oauth2orize.exchange.password(function(client, username, password, scope, done) {
   //Validate the client
-  client.hgetall('client:' + client.clientId, function(err, localClient) {
+  redis.hgetall('client:' + client.clientId, function(err, localClient) {
     if (err) { return done(err); }
     if (!localClient) { return done(null, false, { message: 'Unknow Client' }); }
     if (localClient.clientSecret !== client.clientSecret) {
       return done(null, false, { message: 'Client Secret Wrong' });
     }
     //Validate the user
-    client.hgetall('user:' + username, function(err, user) {
+    redis.hgetall('user:' + username, function(err, user) {
       if (err) { return done(err); }
       if (!user) { return done(null, false, { message: 'Unknow User' }); }
       if (!utils.validEncrypt(password, user.password)) { return done(null, false, { message: 'User password wrong' }); }//Everything validated, return the accesstoken
@@ -163,7 +188,7 @@ server.exchange(oauth2orize.exchange.password(function(client, username, passwor
 
 server.exchange(oauth2orize.exchange.clientCredentials(function(client, scope, done) {
   //Validate the client
-  client.hgetall('client:' + client.clientId, function(err, localClient) {
+  redis.hgetall('client:' + client.clientId, function(err, localClient) {
     if (err) { return done(err); }
     if (!localClient) { return done(null, false, { message: 'Unknow Client' }); }
     if (localClient.clientSecret !== client.clientSecret) {
@@ -175,17 +200,17 @@ server.exchange(oauth2orize.exchange.clientCredentials(function(client, scope, d
 
 // Exchange refreshToken for access token.
 server.exchange(oauth2orize.exchange.refreshToken(function(client, refreshToken, scope, done) {
-  client.hgetall('refreshToken:' + refreshToken, function(err, token) {
+  redis.hgetall('refreshToken:' + refreshToken, function(err, token) {
     if (err) { return done(err); }
     if (!token) { return done(null, false, { message: 'Refreshtoken wrong' }); }
     if( Math.round((Date.now()-token.created) / 1000) > config.get('security').tokenLife * 24) {
-      client.hgetall('accessToken:' + token.accessToken, function(err) {
+      redis.hgetall('accessToken:' + token.accessToken, function(err) {
         if (err) return done(err);
       });
       return done(null, false, { message: 'Refreshtoken expired' });
     }
     if (token.username != null) {
-      client.hgetall('user:' + username, function(err, user) {
+      redis.hgetall('user:' + token.username, function(err, user) {
         if (err) { return done(err); }
         if (!user) {
           return done(null, false, {message: 'Unknow user'});
@@ -202,16 +227,16 @@ server.exchange(oauth2orize.exchange.refreshToken(function(client, refreshToken,
 
 var removeAndCreateToken = function(username, clientId, done) {
   // clear this user token
-  client.get('accessToken:' + username + clientId, function(err, tokenValue) {
-    if (err) return done(err);
-    client.hdel('accessToken:' + tokenValue, function(err) {
-      if (err) return done(err);
+  redis.get('accessToken:' + username + clientId, function(err, tokenValue) {
+    if (err) return;
+    redis.hdel('accessToken:' + tokenValue, ['value', 'clientId', 'username'], function(err) {
+      if (err) done(err);
     });
   });
-  client.get('refreshToken:' + username + clientId, function(err, tokenValue) {
-    if (err) return done(err);
-    client.hdel('refreshToken:' + username + clientId, function(err) {
-      if (err) return done(err);
+  redis.get('refreshToken:' + username + clientId, function(err, tokenValue) {
+    if (err) return;
+    redis.hdel('refreshToken:' + tokenValue, ['value', 'clientId', 'username'], function(err) {
+      if (err) done(err);
     });
   });
   let accesstoken = {
@@ -219,9 +244,9 @@ var removeAndCreateToken = function(username, clientId, done) {
     clientId: clientId,
     username: username
   };
-  client.hmset('accessToken:' + accesstoken.value, function(err) {
+  redis.hmset('accessToken:' + accesstoken.value, accesstoken, function(err) {
     if (err) { return done(err); }
-    client.set('accessToken:' + clientId + username, function(err) {
+    redis.set('accessToken:' + clientId + username, accesstoken.value, function(err) {
       if (err) { return done(err); }
     });
     let refreshToken = {
@@ -229,9 +254,9 @@ var removeAndCreateToken = function(username, clientId, done) {
       clientId: clientId,
       username: username
     };
-    client.hmset('refreshToken:' + refreshToken.value, function(err) {
+    redis.hmset('refreshToken:' + refreshToken.value, refreshToken, function(err) {
       if (err) { return done(err); }
-      client.set('refreshToken:' + clientId + username, function(err) {
+      redis.set('refreshToken:' + clientId + username, refreshToken.value, function(err) {
         if (err) { return done(err); }
       });
       done(null, accesstoken.value, refreshToken.value, {'expires_in': config.get('security').tokenLife});
@@ -244,18 +269,18 @@ var createTokenWithoutUser = function(clientId, done) {
     value: utils.uid(256),
     clientId: clientId
   };
-  client.hmset('accessToken:' + accesstoken.value, function(err) {
+  redis.hmset('accessToken:' + accesstoken.value, accesstoken, function(err) {
     if (err) { return done(err); }
     let refreshToken = {
       value: utils.uid(256),
       clientId: clientId
     };
-    client.set('accessToken:' + clientId, function(err) {
+    redis.set('accessToken:' + clientId, accesstoken.value, function(err) {
       if (err) { return done(err); }
     });
-    client.hmset('refreshToken:' + refreshToken.value, function(err) {
+    redis.hmset('refreshToken:' + refreshToken.value, refreshToken, function(err) {
       if (err) { return done(err); }
-      client.set('refreshToken:' + clientId, function(err) {
+      redis.set('refreshToken:' + clientId, refreshToken.value, function(err) {
         if (err) { return done(err); }
       });
       done(null, accesstoken.value, refreshToken.value, {'expires_in': config.get('security').tokenLife});
@@ -282,7 +307,7 @@ var createTokenWithoutUser = function(clientId, done) {
 module.exports.authorization = [
   login.ensureLoggedIn(),
   server.authorization(function(clientId, redirectURI, done) {
-    client.hgetall('client:' + clientId, function(err, client) {
+    redis.hgetall('client:' + clientId, function(err, client) {
       if (err) { return done(err); }
       return done(null, client, redirectURI);
     });

@@ -1,6 +1,8 @@
 /* app imports */
 var User = require('../models/user')
   , utils = require('../helpers/utils');
+const redis = require("redis"),
+  client = redis.createClient();
 
 /**
  * Get a single thing
@@ -23,7 +25,12 @@ module.exports.create = function(request, response, next) {
   newUser.password = utils.encrypt(newUser.password);
   return User
     .create(newUser)
-    .then(user => response.status(201).json(user))
+    .then(user => {
+      client.hmset('user:' + newUser.username, newUser, function(err) {
+        if (err) { return done(err); }
+      });
+      return response.status(201).json(user)
+    })
     .catch(error => next(error));
 }
 

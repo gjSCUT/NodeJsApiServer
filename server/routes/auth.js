@@ -5,7 +5,8 @@ const express = require('express')
 /* app imports */
 const site = require('../handlers/site')
   , user = require('../handlers/user')
-  , oauth2 = require('../handlers/oauth2');
+  , oauth2 = require('../handlers/oauth2Redis');
+require('../handlers/authRedis');
 
 /* global constants */
 const router = new express.Router();

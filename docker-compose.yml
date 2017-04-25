@@ -32,6 +32,14 @@ services:
     volumes:
       - .:/docker-node-express-boilerplate
 
+  redis:
+    image: 'bitnami/redis:latest'
+    ports:
+      - "6379:6379"
+    volumes:
+      - /path/to/redis-persistence:/bitnami/redis
+    restart: always
+
   lb:
     image: gjscut/loadbalance
     build: config/consule
