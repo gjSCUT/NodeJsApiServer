@@ -1,8 +1,8 @@
 /* app imports */
 var User = require('../models/user')
   , utils = require('../helpers/utils');
-const redis = require("redis"),
-  client = redis.createClient();
+const redisModule = require("redis"),
+  redis = redisModule.createClient();
 
 /**
  * Get a single thing
@@ -26,7 +26,7 @@ module.exports.create = function(request, response, next) {
   return User
     .create(newUser)
     .then(user => {
-      client.hmset('user:' + newUser.username, newUser, function(err) {
+      redis.hmset('user:' + newUser.username, newUser, function(err) {
         if (err) { return done(err); }
       });
       return response.status(201).json(user)
@@ -48,7 +48,12 @@ module.exports.changePassword = function(request, response, next) {
     user.password = newPassword;
     return user
       .save()
-      .then(user => response.status(200).json(user))
+      .then(updatedUser => {
+        redis.hmset('user:' + user.username, user, function(err) {
+          if (err) { return done(err); }
+        });
+        return response.status(200).json(updatedUser);
+      })
       .catch(error => next(error));
   });
 }
@@ -61,7 +66,12 @@ module.exports.delete = function(request, response, next) {
   const id = request.param.id;
   return User
     .remove({_id: id})
-    .then(user => response.status(200).json(user))
+    .then(user => {
+      redis.hdel('user:' + user.username, ['username', 'password', 'name'], function(err) {
+        if (err) { return done(err); }
+      });
+      return response.status(200).json(user);
+    })
     .catch(error => next(error));
 }
 
