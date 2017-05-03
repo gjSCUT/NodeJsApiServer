@@ -25,10 +25,20 @@ var DistributeWell = restful.model('DistributeWell',
   .methods(['get', 'post', 'put', 'delete'])
   .before('get', passport.authenticate('bearer', { session: false }))
   .before('get', function(req, res, next) {
-    if (DistributeWell.lasted != null && req.query.limit === "1" && req.query.sort === "-createTime") {
-      return res.status(200).json([DistributeWell.lasted]);
-    } else {
-      return next();
+    if (req.query.sort === "-createTime" && isNaN(req.query.skip)) {
+      var cache = DistributeWell.lasted[req.query.limit];
+      if (cache) {
+        return res.status(200).json(cache);
+      } else {
+        DistributeWell.find()
+          .limit(Number(req.query.limit))
+          .sort(req.query.sort)
+          .then(users => {
+            DistributeWell.lasted[req.query.limit] = users;
+            res.status(201).json(users)
+          })
+          .catch(error => next(error));
+      }
     }
   })
   .before('post', passport.authenticate('bearer', { session: false }))
@@ -36,13 +46,17 @@ var DistributeWell = restful.model('DistributeWell',
     return DistributeWell
       .create(new DistributeWell(req.body))
       .then(model => {
-        DistributeWell.lasted = model;
+        var cacheMap = DistributeWell.lasted;
+        for(var field in cacheMap) {
+          cacheMap[field].pop();
+          cacheMap[field].unshift(model)
+        }
         return res.status(201).json(model)
       })
       .catch(error => next(error));
   })
   .before('put', passport.authenticate('bearer', { session: false }))
   .before('delete', passport.authenticate('bearer', { session: false }));
-DistributeWell.lasted = null;
+DistributeWell.lasted = {};
 
 module.exports = DistributeWell;

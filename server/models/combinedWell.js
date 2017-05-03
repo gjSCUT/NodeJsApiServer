@@ -25,10 +25,20 @@ var CombinedWell = restful.model('CombinedWell',
   .methods(['get', 'post', 'put', 'delete'])
   .before('get', passport.authenticate('bearer', { session: false }))
   .before('get', function(req, res, next) {
-    if (CombinedWell.lasted != null && req.query.limit === "1" && req.query.sort === "-createTime") {
-      return res.status(200).json([CombinedWell.lasted]);
-    } else {
-      return next();
+    if (req.query.sort === "-createTime" && isNaN(req.query.skip)) {
+      var cache = CombinedWell.lasted[req.query.limit];
+      if (cache) {
+        return res.status(200).json(cache);
+      } else {
+        CombinedWell.find()
+          .limit(Number(req.query.limit))
+          .sort(req.query.sort)
+          .then(users => {
+            CombinedWell.lasted[req.query.limit] = users;
+            res.status(201).json(users)
+          })
+          .catch(error => next(error));
+      }
     }
   })
   .before('post', passport.authenticate('bearer', { session: false }))
@@ -36,13 +46,17 @@ var CombinedWell = restful.model('CombinedWell',
     return CombinedWell
       .create(new CombinedWell(req.body))
       .then(model => {
-        CombinedWell.lasted = model;
+        var cacheMap = CombinedWell.lasted;
+        for(var field in cacheMap) {
+          cacheMap[field].pop();
+          cacheMap[field].unshift(model)
+        }
         return res.status(201).json(model)
       })
       .catch(error => next(error));
   })
   .before('put', passport.authenticate('bearer', { session: false }))
   .before('delete', passport.authenticate('bearer', { session: false }));
-CombinedWell.lasted = null;
+CombinedWell.lasted = {};
 
 module.exports = CombinedWell;

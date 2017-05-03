@@ -1,3 +1,4 @@
+var newrelic = require('newrelic');
 /* npm packages */
 require('connect-mongo');
 const bodyParser = require('body-parser');
@@ -26,10 +27,10 @@ var options = {
   passphrase: 'guojun@123'
 };
 const server = express();
-
+server.locals.newrelic = newrelic;
 /* --- Database --- */
 mongoose.Promise = Promise;
-mongoose.set('debug', true);
+mongoose.set('debug', false);
 const dbConfig = config.get('dbConfig');
 if (config.util.getEnv('NODE_ENV') !== 'standalone') {
   mongoose.connect(`mongodb://${dbConfig.host}:${dbConfig.port}/${dbConfig.name}`, dbConfig.options);

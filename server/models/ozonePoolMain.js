@@ -26,10 +26,20 @@ var OzonePoolMain = restful.model('OzonePoolMain',
   .methods(['get', 'post', 'put', 'delete'])
   .before('get', passport.authenticate('bearer', { session: false }))
   .before('get', function(req, res, next) {
-    if (OzonePoolMain.lasted != null && req.query.limit === "1" && req.query.sort === "-createTime") {
-      return res.status(200).json([OzonePoolMain.lasted]);
-    } else {
-      return next();
+    if (req.query.sort === "-createTime" && isNaN(req.query.skip)) {
+      var cache = OzonePoolMain.lasted[req.query.limit];
+      if (cache) {
+        return res.status(200).json(cache);
+      } else {
+        OzonePoolMain.find()
+          .limit(Number(req.query.limit))
+          .sort(req.query.sort)
+          .then(users => {
+            OzonePoolMain.lasted[req.query.limit] = users;
+            res.status(201).json(users)
+          })
+          .catch(error => next(error));
+      }
     }
   })
   .before('post', passport.authenticate('bearer', { session: false }))
@@ -37,13 +47,17 @@ var OzonePoolMain = restful.model('OzonePoolMain',
     return OzonePoolMain
       .create(new OzonePoolMain(req.body))
       .then(model => {
-        OzonePoolMain.lasted = model;
+        var cacheMap = OzonePoolMain.lasted;
+        for(var field in cacheMap) {
+          cacheMap[field].pop();
+          cacheMap[field].unshift(model)
+        }
         return res.status(201).json(model)
       })
       .catch(error => next(error));
   })
   .before('put', passport.authenticate('bearer', { session: false }))
   .before('delete', passport.authenticate('bearer', { session: false }));
-OzonePoolMain.lasted = null;
+OzonePoolMain.lasted = {};
 
 module.exports = OzonePoolMain;

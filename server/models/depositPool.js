@@ -25,10 +25,20 @@ var DepositPool = restful.model('DepositPool',
   .methods(['get', 'post', 'put', 'delete'])
   .before('get', passport.authenticate('bearer', { session: false }))
   .before('get', function(req, res, next) {
-    if (DepositPool.lasted != null && req.query.limit === "1" && req.query.sort === "-createTime") {
-      return res.status(200).json([DepositPool.lasted]);
-    } else {
-      return next();
+    if (req.query.sort === "-createTime" && isNaN(req.query.skip)) {
+      var cache = DepositPool.lasted[req.query.limit];
+      if (cache) {
+        return res.status(200).json(cache);
+      } else {
+        DepositPool.find()
+          .limit(Number(req.query.limit))
+          .sort(req.query.sort)
+          .then(users => {
+            DepositPool.lasted[req.query.limit] = users;
+            res.status(201).json(users)
+          })
+          .catch(error => next(error));
+      }
     }
   })
   .before('post', passport.authenticate('bearer', { session: false }))
@@ -36,13 +46,17 @@ var DepositPool = restful.model('DepositPool',
     return DepositPool
       .create(new DepositPool(req.body))
       .then(model => {
-        DepositPool.lasted = model;
+        var cacheMap = DepositPool.lasted;
+        for(var field in cacheMap) {
+          cacheMap[field].pop();
+          cacheMap[field].unshift(model)
+        }
         return res.status(201).json(model)
       })
       .catch(error => next(error));
   })
   .before('put', passport.authenticate('bearer', { session: false }))
   .before('delete', passport.authenticate('bearer', { session: false }));
-DepositPool.lasted = null;
+DepositPool.lasted = {};
 
 module.exports = DepositPool;

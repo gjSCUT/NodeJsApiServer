@@ -32,10 +32,20 @@ var PumpRoomOut = restful.model('PumpRoomOut',
   .methods(['get', 'post', 'put', 'delete'])
   .before('get', passport.authenticate('bearer', { session: false }))
   .before('get', function(req, res, next) {
-    if (PumpRoomOut.lasted != null && req.query.limit === "1" && req.query.sort === "-createTime") {
-      return res.status(200).json([PumpRoomOut.lasted]);
-    } else {
-      return next();
+    if (req.query.sort === "-createTime" && isNaN(req.query.skip)) {
+      var cache = PumpRoomOut.lasted[req.query.limit];
+      if (cache) {
+        return res.status(200).json(cache);
+      } else {
+        PumpRoomOut.find()
+          .limit(Number(req.query.limit))
+          .sort(req.query.sort)
+          .then(users => {
+            PumpRoomOut.lasted[req.query.limit] = users;
+            res.status(201).json(users)
+          })
+          .catch(error => next(error));
+      }
     }
   })
   .before('post', passport.authenticate('bearer', { session: false }))
@@ -43,13 +53,18 @@ var PumpRoomOut = restful.model('PumpRoomOut',
     return PumpRoomOut
       .create(new PumpRoomOut(req.body))
       .then(model => {
-        PumpRoomOut.lasted = model;
+        var cacheMap = PumpRoomOut.lasted;
+        for(var field in cacheMap) {
+          cacheMap[field].pop();
+          cacheMap[field].unshift(model)
+        }
         return res.status(201).json(model)
       })
       .catch(error => next(error));
   })
   .before('put', passport.authenticate('bearer', { session: false }))
   .before('delete', passport.authenticate('bearer', { session: false }));
-PumpRoomOut.lasted = null;
+
+PumpRoomOut.lasted = {};
 
 module.exports = PumpRoomOut;

@@ -9,7 +9,7 @@ const passport = require('passport')
   , utils = require('../helpers/utils')
   , config = require('config');
 const redisModule = require('redis'),
-  redis = redisModule.createClient();
+  redis = redisModule.createClient(6379, 'redis');
 
 passport.serializeUser(function(user, done) {
   done(null, user.username);

@@ -2,7 +2,7 @@
 var User = require('../models/user')
   , utils = require('../helpers/utils');
 const redisModule = require("redis"),
-  redis = redisModule.createClient();
+  redis = redisModule.createClient(6379, 'redis');
 
 /**
  * Get a single thing

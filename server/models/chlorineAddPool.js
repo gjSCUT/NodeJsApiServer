@@ -26,10 +26,20 @@ var ChlorineAddPool = restful.model('ChlorineAddPool',
   .methods(['get', 'post', 'put', 'delete'])
   .before('get', passport.authenticate('bearer', { session: false }))
   .before('get', function(req, res, next) {
-    if (ChlorineAddPool.lasted != null && req.query.limit === "1" && req.query.sort === "-createTime") {
-      return res.status(200).json([ChlorineAddPool.lasted]);
-    } else {
-      return next();
+    if (req.query.sort === "-createTime" && isNaN(req.query.skip)) {
+      var cache = ChlorineAddPool.lasted[req.query.limit];
+      if (cache) {
+        return res.status(200).json(cache);
+      } else {
+        ChlorineAddPool.find()
+          .limit(Number(req.query.limit))
+          .sort(req.query.sort)
+          .then(users => {
+            ChlorineAddPool.lasted[req.query.limit] = users;
+            res.status(201).json(users)
+          })
+          .catch(error => next(error));
+      }
     }
   })
   .before('post', passport.authenticate('bearer', { session: false }))
@@ -37,13 +47,17 @@ var ChlorineAddPool = restful.model('ChlorineAddPool',
     return ChlorineAddPool
       .create(new ChlorineAddPool(req.body))
       .then(model => {
-        ChlorineAddPool.lasted = model;
+        var cacheMap = ChlorineAddPool.lasted;
+        for(var field in cacheMap) {
+          cacheMap[field].pop();
+          cacheMap[field].unshift(model)
+        }
         return res.status(201).json(model)
       })
       .catch(error => next(error));
   })
   .before('put', passport.authenticate('bearer', { session: false }))
   .before('delete', passport.authenticate('bearer', { session: false }));
-ChlorineAddPool.lasted = null;
+ChlorineAddPool.lasted = {};
 
 module.exports = ChlorineAddPool;

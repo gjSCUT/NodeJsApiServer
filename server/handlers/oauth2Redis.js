@@ -11,7 +11,7 @@ const redisModule = require('redis'),
   redis = redisModule.createClient();
 
 // create OAuth 2.0 server
-var server = oauth2orize.createServer();
+var server = oauth2orize.createServer(6379, 'redis');
 
 // Register serialialization and deserialization functions.
 //

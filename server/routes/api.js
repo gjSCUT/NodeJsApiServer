@@ -3,38 +3,36 @@ const express = require('express');
 const router = new express.Router();
 
 /* app imports */
-const thing = require('../models/thing');
-const distributeWell = require('../models/distributeWell');
-const combinedWell = require('../models/combinedWell');
-const suctionWell = require('../models/suctionWell');
-const activatedCarbonPool = require('../models/activatedCarbonPool');
-const depositPool = require('../models/depositPool');
-const sandLeachPool = require('../models/sandLeachPool');
-const coagulatePool = require('../models/coagulatePool');
-const chlorineAddPool = require('../models/chlorineAddPool');
-const ozonePoolAdvance = require('../models/ozonePoolAdvance');
-const ozonePoolMain = require('../models/ozonePoolMain');
-const pumpRoomFirst = require('../models/pumpRoomFirst');
-const pumpRoomSecond = require('../models/pumpRoomSecond');
-const pumpRoomOut = require('../models/pumpRoomOut');
+const DistributeWell = require('../models/distributeWell');
+const CombinedWell = require('../models/combinedWell');
+const SuctionWell = require('../models/suctionWell');
+const ActivatedCarbonPool = require('../models/activatedCarbonPool');
+const DepositPool = require('../models/depositPool');
+const SandLeachPool = require('../models/sandLeachPool');
+const CoagulatePool = require('../models/coagulatePool');
+const ChlorineAddPool = require('../models/chlorineAddPool');
+const OzonePoolAdvance = require('../models/ozonePoolAdvance');
+const OzonePoolMain = require('../models/ozonePoolMain');
+const PumpRoomFirst = require('../models/pumpRoomFirst');
+const PumpRoomSecond = require('../models/pumpRoomSecond');
+const PumpRoomOut = require('../models/pumpRoomOut');
 
-thing.register(router, '/things');
-distributeWell.register(router, '/distributeWell');
-combinedWell.register(router, '/combinedWell');
-suctionWell.register(router, '/suctionWell');
-activatedCarbonPool.register(router, '/activatedCarbonPool');
-depositPool.register(router, '/depositPool');
-sandLeachPool.register(router, '/sandLeachPool');
-coagulatePool.register(router, '/coagulatePool');
-chlorineAddPool.register(router, '/chlorineAddPool');
-ozonePoolAdvance.register(router, '/ozonePoolAdvance');
-ozonePoolMain.register(router, '/ozonePoolMain');
-pumpRoomFirst.register(router, '/pumpRoomFirst');
-pumpRoomSecond.register(router, '/pumpRoomSecond');
-pumpRoomOut.register(router, '/pumpRoomOut');
+DistributeWell.register(router, '/distributeWell');
+CombinedWell.register(router, '/combinedWell');
+SuctionWell.register(router, '/suctionWell');
+ActivatedCarbonPool.register(router, '/activatedCarbonPool');
+SandLeachPool.register(router, '/depositPool');
+CoagulatePool.register(router, '/sandLeachPool');
+CoagulatePool.register(router, '/coagulatePool');
+ChlorineAddPool.register(router, '/chlorineAddPool');
+OzonePoolAdvance.register(router, '/ozonePoolAdvance');
+OzonePoolMain.register(router, '/ozonePoolMain');
+PumpRoomFirst.register(router, '/pumpRoomFirst');
+PumpRoomSecond.register(router, '/pumpRoomSecond');
+PumpRoomOut.register(router, '/pumpRoomOut');
 
 setInterval(function() {
-  new distributeWell({
+  new DistributeWell({
     phIn: 7 * (1 + Math.random()),
     waterTemperIn: 15 * (1 + Math.random()),
     turbidityIn: 75 * (1 + Math.random()),
@@ -49,8 +47,14 @@ setInterval(function() {
     codOut: 25 * (1 - Math.random()),
     tocOut: 15 * (1 - Math.random()),
     flowOut: 2000 * (1 - Math.random())
-  }).save().then(model => distributeWell.lasted = model);
-  new combinedWell({
+  }).save().then(model => {
+    var cacheMap = DistributeWell.lasted;
+    for(var field in cacheMap) {
+      cacheMap[field].pop();
+      cacheMap[field].unshift(model)
+    }
+  });
+  new CombinedWell({
     phIn: 7 * (1 + Math.random()),
     waterTemperIn: 15 * (1 + Math.random()),
     turbidityIn: 75 * (1 + Math.random()),
@@ -65,8 +69,14 @@ setInterval(function() {
     codOut: 25 * (1 - Math.random()),
     tocOut: 15 * (1 - Math.random()),
     flowOut: 2000 * (1 - Math.random())
-  }).save().then(model => combinedWell.lasted = model);
-  new suctionWell({
+  }).save().then(model => {
+    var cacheMap = CombinedWell.lasted;
+    for(var field in cacheMap) {
+      cacheMap[field].pop();
+      cacheMap[field].unshift(model)
+    }
+  });
+  new SuctionWell({
     phIn: 7 * (1 + Math.random()),
     waterTemperIn: 15 * (1 + Math.random()),
     turbidityIn: 75 * (1 + Math.random()),
@@ -81,8 +91,14 @@ setInterval(function() {
     codOut: 25 * (1 - Math.random()),
     tocOut: 15 * (1 - Math.random()),
     flowOut: 2000 * (1 - Math.random())
-  }).save().then(model => suctionWell.lasted = model);
-  new depositPool({
+  }).save().then(model => {
+    var cacheMap = SuctionWell.lasted;
+    for(var field in cacheMap) {
+      cacheMap[field].pop();
+      cacheMap[field].unshift(model)
+    }
+  });
+  new DepositPool({
     phIn: 7 * (1 + Math.random()),
     waterTemperIn: 15 * (1 + Math.random()),
     turbidityIn: 75 * (1 + Math.random()),
@@ -97,8 +113,14 @@ setInterval(function() {
     codOut: 25 * (1 - Math.random()),
     tocOut: 15 * (1 - Math.random()),
     flowOut: 2000 * (1 - Math.random())
-  }).save().then(model => depositPool.lasted = model);
-  new activatedCarbonPool({
+  }).save().then(model => {
+    var cacheMap = DepositPool.lasted;
+    for(var field in cacheMap) {
+      cacheMap[field].pop();
+      cacheMap[field].unshift(model)
+    }
+  });
+  new ActivatedCarbonPool({
     phIn: 7 * (1 + Math.random()),
     waterTemperIn: 15 * (1 + Math.random()),
     turbidityIn: 75 * (1 + Math.random()),
@@ -113,8 +135,14 @@ setInterval(function() {
     codOut: 25 * (1 - Math.random()),
     tocOut: 15 * (1 - Math.random()),
     flowOut: 2000 * (1 - Math.random())
-  }).save().then(model => activatedCarbonPool.lasted = model);
-  new sandLeachPool({
+  }).save().then(model => {
+    var cacheMap = ActivatedCarbonPool.lasted;
+    for(var field in cacheMap) {
+      cacheMap[field].pop();
+      cacheMap[field].unshift(model)
+    }
+  });
+  new SandLeachPool({
     phIn: 7 * (1 + Math.random()),
     waterTemperIn: 15 * (1 + Math.random()),
     turbidityIn: 75 * (1 + Math.random()),
@@ -129,8 +157,14 @@ setInterval(function() {
     codOut: 25 * (1 - Math.random()),
     tocOut: 15 * (1 - Math.random()),
     flowOut: 2000 * (1 - Math.random())
-  }).save().then(model => sandLeachPool.lasted = model);
-  new coagulatePool({
+  }).save().then(model => {
+    var cacheMap = SandLeachPool.lasted;
+    for(var field in cacheMap) {
+      cacheMap[field].pop();
+      cacheMap[field].unshift(model)
+    }
+  });
+  new CoagulatePool({
     phIn: 7 * (1 + Math.random()),
     waterTemperIn: 15 * (1 + Math.random()),
     turbidityIn: 75 * (1 + Math.random()),
@@ -146,8 +180,14 @@ setInterval(function() {
     tocOut: 15 * (1 - Math.random()),
     flowOut: 2000 * (1 - Math.random()),
     alumAmount: 50 * Math.random()
-  }).save().then(model => coagulatePool.lasted = model);
-  new chlorineAddPool({
+  }).save().then(model => {
+    var cacheMap = CoagulatePool.lasted;
+    for(var field in cacheMap) {
+      cacheMap[field].pop();
+      cacheMap[field].unshift(model)
+    }
+  });
+  new ChlorineAddPool({
     phIn: 7 * (1 + Math.random()),
     waterTemperIn: 15 * (1 + Math.random()),
     turbidityIn: 75 * (1 + Math.random()),
@@ -163,8 +203,14 @@ setInterval(function() {
     tocOut: 15 * (1 - Math.random()),
     flowOut: 2000 * (1 - Math.random()),
     chlorineAmount: 50 * Math.random()
-  }).save().then(model => chlorineAddPool.lasted = model);
-  new ozonePoolMain({
+  }).save().then(model => {
+    var cacheMap = ChlorineAddPool.lasted;
+    for(var field in cacheMap) {
+      cacheMap[field].pop();
+      cacheMap[field].unshift(model)
+    }
+  });
+  new OzonePoolMain({
     phIn: 7 * (1 + Math.random()),
     waterTemperIn: 15 * (1 + Math.random()),
     turbidityIn: 75 * (1 + Math.random()),
@@ -180,8 +226,14 @@ setInterval(function() {
     tocOut: 15 * (1 - Math.random()),
     flowOut: 2000 * (1 - Math.random()),
     zoneAmount: 0.7 * Math.random()
-  }).save().then(model => ozonePoolMain.lasted = model);
-  new ozonePoolAdvance({
+  }).save().then(model => {
+    var cacheMap = OzonePoolMain.lasted;
+    for(var field in cacheMap) {
+      cacheMap[field].pop();
+      cacheMap[field].unshift(model)
+    }
+  });
+  new OzonePoolAdvance({
     phIn: 7 * (1 + Math.random()),
     waterTemperIn: 15 * (1 + Math.random()),
     turbidityIn: 75 * (1 + Math.random()),
@@ -197,8 +249,14 @@ setInterval(function() {
     tocOut: 15 * (1 - Math.random()),
     flowOut: 2000 * (1 - Math.random()),
     zoneAmount: 0.7 * Math.random()
-  }).save().then(model => ozonePoolAdvance.lasted = model);
-  new pumpRoomFirst({
+  }).save().then(model => {
+    var cacheMap = OzonePoolAdvance.lasted;
+    for(var field in cacheMap) {
+      cacheMap[field].pop();
+      cacheMap[field].unshift(model)
+    }
+  });
+  new PumpRoomFirst({
     phIn: 7 * (1 + Math.random()),
     waterTemperIn: 15 * (1 + Math.random()),
     turbidityIn: 75 * (1 + Math.random()),
@@ -217,8 +275,14 @@ setInterval(function() {
       {order: 2, frequency: 40 + 50 * Math.random(), head: 3 + 4 * Math.random(), flow: 4000 * Math.random()},
       {order: 3, frequency: 40 + 50 * Math.random(), head: 3 + 4 * Math.random(), flow: 4000 * Math.random()},
       {order: 4, frequency: 40 + 50 * Math.random(), head: 3 + 4 * Math.random(), flow: 4000 * Math.random()}]
-  }).save().then(model => pumpRoomFirst.lasted = model);
-  new pumpRoomOut({
+  }).save().then(model => {
+    var cacheMap = PumpRoomFirst.lasted;
+    for(var field in cacheMap) {
+      cacheMap[field].pop();
+      cacheMap[field].unshift(model)
+    }
+  });
+  new PumpRoomOut({
     phIn: 7 * (1 + Math.random()),
     waterTemperIn: 15 * (1 + Math.random()),
     turbidityIn: 75 * (1 + Math.random()),
@@ -237,8 +301,14 @@ setInterval(function() {
       {order: 2, frequency: 40 + 50 * Math.random(), head: 3 + 4 * Math.random(), flow: 4000 * Math.random()},
       {order: 3, frequency: 40 + 50 * Math.random(), head: 3 + 4 * Math.random(), flow: 4000 * Math.random()},
       {order: 4, frequency: 40 + 50 * Math.random(), head: 3 + 4 * Math.random(), flow: 4000 * Math.random()}]
-  }).save().then(model => pumpRoomOut.lasted = model);
-  new pumpRoomSecond({
+  }).save().then(model => {
+    var cacheMap = PumpRoomOut.lasted;
+    for(var field in cacheMap) {
+      cacheMap[field].pop();
+      cacheMap[field].unshift(model)
+    }
+  });
+  new PumpRoomSecond({
     phIn: 7 * (1 + Math.random()),
     waterTemperIn: 15 * (1 + Math.random()),
     turbidityIn: 75 * (1 + Math.random()),
@@ -257,6 +327,12 @@ setInterval(function() {
       {order: 2, frequency: 40 + 50 * Math.random(), head: 3 + 4 * Math.random(), flow: 4000 * Math.random()},
       {order: 3, frequency: 40 + 50 * Math.random(), head: 3 + 4 * Math.random(), flow: 4000 * Math.random()},
       {order: 4, frequency: 40 + 50 * Math.random(), head: 3 + 4 * Math.random(), flow: 4000 * Math.random()}]
-  }).save().then(model => pumpRoomSecond.lasted = model);
+  }).save().then(model => model => {
+    var cacheMap = PumpRoomSecond.lasted;
+    for(var field in cacheMap) {
+      cacheMap[field].pop();
+      cacheMap[field].unshift(model)
+    }
+  });
 }, 10 * 1000, null);
 module.exports = router;

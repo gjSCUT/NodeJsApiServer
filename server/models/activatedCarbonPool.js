@@ -25,17 +25,32 @@ var ActivatedCarbonPool = restful.model('ActivatedCarbonPool',
   .methods(['get', 'post', 'put', 'delete'])
   .before('get', passport.authenticate('bearer', { session: false }))
   .before('get', function(req, res, next) {
-    if (ActivatedCarbonPool.lasted != null && req.query.limit === "1" && req.query.sort === "-createTime") {
-      return res.status(200).json([ActivatedCarbonPool.lasted]);
-    } else {
-      return next();
+    if (req.query.sort === "-createTime" && isNaN(req.query.skip)) {
+      var cache = ActivatedCarbonPool.lasted[req.query.limit];
+      if (cache) {
+        return res.status(200).json(cache);
+      } else {
+        ActivatedCarbonPool.find()
+          .limit(Number(req.query.limit))
+          .sort(req.query.sort)
+          .then(users => {
+            ActivatedCarbonPool.lasted[req.query.limit] = users;
+            res.status(201).json(users)
+          })
+          .catch(error => next(error));
+      }
     }
   })
+  .before('post', passport.authenticate('bearer', { session: false }))
   .before('post', function(req, res, next) {
     return ActivatedCarbonPool
       .create(new ActivatedCarbonPool(req.body))
       .then(model => {
-        ActivatedCarbonPool.lasted = model;
+        var cacheMap = ActivatedCarbonPool.lasted;
+        for(var field in cacheMap) {
+          cacheMap[field].pop();
+          cacheMap[field].unshift(model)
+        }
         return res.status(201).json(model)
       })
       .catch(error => next(error));
@@ -43,6 +58,6 @@ var ActivatedCarbonPool = restful.model('ActivatedCarbonPool',
   .before('post', passport.authenticate('bearer', { session: false }))
   .before('put', passport.authenticate('bearer', { session: false }))
   .before('delete', passport.authenticate('bearer', { session: false }));
-ActivatedCarbonPool.lasted = null;
+ActivatedCarbonPool.lasted = {};
 
 module.exports = ActivatedCarbonPool;
