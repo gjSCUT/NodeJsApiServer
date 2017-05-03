@@ -50,7 +50,7 @@ var ChlorineAddPool = restful.model('ChlorineAddPool',
         var cacheMap = ChlorineAddPool.lasted;
         for(var field in cacheMap) {
           cacheMap[field].pop();
-          cacheMap[field].unshift(model)
+          cacheMap[field].unshift(model.toJSON())
         }
         return res.status(201).json(model)
       })

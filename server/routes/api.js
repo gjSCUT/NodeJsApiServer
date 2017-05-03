@@ -51,7 +51,7 @@ setInterval(function() {
     var cacheMap = DistributeWell.lasted;
     for(var field in cacheMap) {
       cacheMap[field].pop();
-      cacheMap[field].unshift(model)
+      cacheMap[field].unshift(model.toJSON())
     }
   });
   new CombinedWell({
@@ -73,7 +73,7 @@ setInterval(function() {
     var cacheMap = CombinedWell.lasted;
     for(var field in cacheMap) {
       cacheMap[field].pop();
-      cacheMap[field].unshift(model)
+      cacheMap[field].unshift(model.toJSON())
     }
   });
   new SuctionWell({
@@ -95,7 +95,7 @@ setInterval(function() {
     var cacheMap = SuctionWell.lasted;
     for(var field in cacheMap) {
       cacheMap[field].pop();
-      cacheMap[field].unshift(model)
+      cacheMap[field].unshift(model.toJSON())
     }
   });
   new DepositPool({
@@ -117,7 +117,7 @@ setInterval(function() {
     var cacheMap = DepositPool.lasted;
     for(var field in cacheMap) {
       cacheMap[field].pop();
-      cacheMap[field].unshift(model)
+      cacheMap[field].unshift(model.toJSON())
     }
   });
   new ActivatedCarbonPool({
@@ -139,7 +139,7 @@ setInterval(function() {
     var cacheMap = ActivatedCarbonPool.lasted;
     for(var field in cacheMap) {
       cacheMap[field].pop();
-      cacheMap[field].unshift(model)
+      cacheMap[field].unshift(model.toJSON())
     }
   });
   new SandLeachPool({
@@ -161,7 +161,7 @@ setInterval(function() {
     var cacheMap = SandLeachPool.lasted;
     for(var field in cacheMap) {
       cacheMap[field].pop();
-      cacheMap[field].unshift(model)
+      cacheMap[field].unshift(model.toJSON())
     }
   });
   new CoagulatePool({
@@ -184,7 +184,7 @@ setInterval(function() {
     var cacheMap = CoagulatePool.lasted;
     for(var field in cacheMap) {
       cacheMap[field].pop();
-      cacheMap[field].unshift(model)
+      cacheMap[field].unshift(model.toJSON())
     }
   });
   new ChlorineAddPool({
@@ -207,7 +207,7 @@ setInterval(function() {
     var cacheMap = ChlorineAddPool.lasted;
     for(var field in cacheMap) {
       cacheMap[field].pop();
-      cacheMap[field].unshift(model)
+      cacheMap[field].unshift(model.toJSON())
     }
   });
   new OzonePoolMain({
@@ -230,7 +230,7 @@ setInterval(function() {
     var cacheMap = OzonePoolMain.lasted;
     for(var field in cacheMap) {
       cacheMap[field].pop();
-      cacheMap[field].unshift(model)
+      cacheMap[field].unshift(model.toJSON())
     }
   });
   new OzonePoolAdvance({
@@ -253,7 +253,7 @@ setInterval(function() {
     var cacheMap = OzonePoolAdvance.lasted;
     for(var field in cacheMap) {
       cacheMap[field].pop();
-      cacheMap[field].unshift(model)
+      cacheMap[field].unshift(model.toJSON())
     }
   });
   new PumpRoomFirst({
@@ -279,7 +279,7 @@ setInterval(function() {
     var cacheMap = PumpRoomFirst.lasted;
     for(var field in cacheMap) {
       cacheMap[field].pop();
-      cacheMap[field].unshift(model)
+      cacheMap[field].unshift(model.toJSON())
     }
   });
   new PumpRoomOut({
@@ -305,7 +305,7 @@ setInterval(function() {
     var cacheMap = PumpRoomOut.lasted;
     for(var field in cacheMap) {
       cacheMap[field].pop();
-      cacheMap[field].unshift(model)
+      cacheMap[field].unshift(model.toJSON())
     }
   });
   new PumpRoomSecond({
@@ -331,7 +331,7 @@ setInterval(function() {
     var cacheMap = PumpRoomSecond.lasted;
     for(var field in cacheMap) {
       cacheMap[field].pop();
-      cacheMap[field].unshift(model)
+      cacheMap[field].unshift(model.toJSON())
     }
   });
 }, 10 * 1000, null);

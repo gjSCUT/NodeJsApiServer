@@ -56,7 +56,7 @@ var PumpRoomOut = restful.model('PumpRoomOut',
         var cacheMap = PumpRoomOut.lasted;
         for(var field in cacheMap) {
           cacheMap[field].pop();
-          cacheMap[field].unshift(model)
+          cacheMap[field].unshift(model.toJSON())
         }
         return res.status(201).json(model)
       })
