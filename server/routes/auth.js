@@ -30,10 +30,10 @@ router.route('/user/:username')
 
 router.route('/login')
   .post(site.login);
-router.route('/login/status/:status')
-  .get(site.loginStatus)
 router.route('/logout')
   .get(site.logout);
+router.route('/login/status/:status')
+  .get(site.loginStatus)
 
 
 router.get('/dialog/authorize', oauth2.authorization);
