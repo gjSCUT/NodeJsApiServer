@@ -16,22 +16,6 @@ services:
     volumes:
       - .:/docker-node-express-boilerplate
 
-  apiSSL:
-    command: pm2-docker --watch server/server.js
-    image: gjscut/water_watcher_api_server
-    environment:
-      SERVICE_NAME: apiSSL
-      SERVICE_TAGS: development
-      NODE_ENV: development
-      NODE_CONFIG_DIR: ./config
-      NODE_APP_INSTANCE: ''
-    external_links:
-      - mongo-router:mongodb
-    ports:
-      - "443:3001"
-    volumes:
-      - .:/docker-node-express-boilerplate
-
   redis:
     image: 'bitnami/redis:latest'
     ports:
