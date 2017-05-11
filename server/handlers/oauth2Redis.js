@@ -8,10 +8,10 @@ const oauth2orize = require('oauth2orize')
   , config = require('config')
   , Client = require('../models/client');
 const redisModule = require('redis'),
-  redis = redisModule.createClient();
+  redis = redisModule.createClient(6379, 'redis');
 
 // create OAuth 2.0 server
-var server = oauth2orize.createServer(6379, 'redis');
+var server = oauth2orize.createServer();
 
 // Register serialialization and deserialization functions.
 //
@@ -53,12 +53,12 @@ redis.hmset('client:admin', {
   clientSecret: '123456',
   name: 'test',
   isTrust: true
-}, function(err) { if (err) { return done(err); }});
+}, function(err) { if (err) { console.log(err); }});
 redis.hmset('client:android', {
   clientId: 'android',
   clientSecret: '123456',
   name: 'android client'
-}, function(err) { if (err) { return done(err); }});
+}, function(err) { if (err) { console.log(err); }});
 redis.hmset('client:c#', {
   clientId: 'c#',
   clientSecret: '123456',
@@ -68,12 +68,12 @@ redis.hmset('client:web', {
   clientId: 'web',
   clientSecret: '123456',
   name: 'web client'
-}, function(err) { if (err) { return done(err); }});
+}, function(err) { if (err) { console.log(err); }});
 redis.hmset('user:admin', {
   username: 'admin',
   password: utils.encrypt('admin'),
   name: 'test'
-}, function(err) { if (err) { return done(err); }});
+}, function(err) { if (err) { console.log(err); }});
 
 
 server.serializeClient(function(client, done) {
