@@ -9,12 +9,15 @@ services:
       NODE_ENV: development
       NODE_CONFIG_DIR: ./config
       NODE_APP_INSTANCE: ''
-    external_links:
-      - mongo-router:mongodb
+    links:
+      - mongo:mongodb
+      - redis:redis
     ports:
       - "3000:3000"
+      - "443:3001"
     volumes:
       - .:/docker-node-express-boilerplate
+    restart: always
 
   redis:
     image: 'bitnami/redis:latest'
@@ -22,6 +25,12 @@ services:
       - "6379:6379"
     volumes:
       - /path/to/redis-persistence:/bitnami/redis
+    restart: always
+
+  mongo:
+    image: mongo
+    ports:
+        - "27017:27017"
     restart: always
 
   lb:
