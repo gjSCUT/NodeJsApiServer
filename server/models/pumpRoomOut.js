@@ -42,7 +42,7 @@ var PumpRoomOut = restful.model('PumpRoomOut',
           .sort(req.query.sort)
           .then(users => {
             PumpRoomOut.lasted[req.query.limit] = users;
-            res.status(201).json(users)
+            res.status(201).json(users);
           })
           .catch(error => next(error));
       }
@@ -58,7 +58,7 @@ var PumpRoomOut = restful.model('PumpRoomOut',
           cacheMap[field].pop();
           cacheMap[field].unshift(model.toJSON())
         }
-        return res.status(201).json(model)
+        return res.status(201).json(model);
       })
       .catch(error => next(error));
   })

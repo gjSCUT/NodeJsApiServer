@@ -36,7 +36,7 @@ var OzonePoolAdvance = restful.model('OzonePoolAdvance',
           .sort(req.query.sort)
           .then(users => {
             OzonePoolAdvance.lasted[req.query.limit] = users;
-            res.status(201).json(users)
+            res.status(201).json(users);
           })
           .catch(error => next(error));
       }
@@ -52,7 +52,7 @@ var OzonePoolAdvance = restful.model('OzonePoolAdvance',
           cacheMap[field].pop();
           cacheMap[field].unshift(model.toJSON())
         }
-        return res.status(201).json(model)
+        return res.status(201).json(model);
       })
       .catch(error => next(error));
   })

@@ -35,7 +35,7 @@ var SandLeachPool = restful.model('SandLeachPool',
           .sort(req.query.sort)
           .then(users => {
             SandLeachPool.lasted[req.query.limit] = users;
-            res.status(201).json(users)
+            res.status(201).json(users);
           })
           .catch(error => next(error));
       }
@@ -51,7 +51,7 @@ var SandLeachPool = restful.model('SandLeachPool',
           cacheMap[field].pop();
           cacheMap[field].unshift(model.toJSON())
         }
-        return res.status(201).json(model)
+        return res.status(201).json(model);
       })
       .catch(error => next(error));
   })

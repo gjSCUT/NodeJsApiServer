@@ -31,6 +31,7 @@ var PumpRoomFirst = restful.model('PumpRoomFirst', new mongoose.Schema({
   .methods(['get', 'post', 'put', 'delete'])
   .before('get', passport.authenticate('bearer', { session: false }))
   .before('get', function(req, res, next) {
+    var time1 = new Date().getTime();
     if (req.query.sort === "-createTime" && isNaN(req.query.skip)) {
       var cache = PumpRoomFirst.lasted[req.query.limit];
       if (cache) {
@@ -40,8 +41,12 @@ var PumpRoomFirst = restful.model('PumpRoomFirst', new mongoose.Schema({
           .limit(Number(req.query.limit))
           .sort(req.query.sort)
           .then(users => {
+            var time2 = new Date().getTime();
             PumpRoomFirst.lasted[req.query.limit] = users;
-            res.status(201).json(users)
+            res.status(201).json(users);;
+            var time3 = new Date().getTime();
+            console.info("time2 - time1 = " + (time2 - time1));
+            console.info("time3 - time2 = " + (time3 - time2));
           })
           .catch(error => next(error));
       }
@@ -57,7 +62,7 @@ var PumpRoomFirst = restful.model('PumpRoomFirst', new mongoose.Schema({
           cacheMap[field].pop();
           cacheMap[field].unshift(model.toJSON())
         }
-        return res.status(201).json(model)
+        return res.status(201).json(model);
       })
       .catch(error => next(error));
   })
