@@ -35,8 +35,8 @@ var PumpRoomFirst = restful.model('PumpRoomFirst', new mongoose.Schema({
     if (req.query.sort === "-createTime" && isNaN(req.query.skip)) {
       var cache = PumpRoomFirst.lasted[req.query.limit];
       if (cache) {
-        var time2 = new Date().getTime();
         res.status(200).json(cache);
+        var time2 = new Date().getTime();
         console.info("cache time2 - time1 = " + (time2 - time1));
       } else {
         PumpRoomFirst.find()
