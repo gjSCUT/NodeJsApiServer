@@ -28,7 +28,7 @@ var DistributeWell = restful.model('DistributeWell',
     if (req.query.sort === "-createTime" && isNaN(req.query.skip)) {
       var cache = DistributeWell.lasted[req.query.limit];
       if (cache) {
-        return res.status(200).json(cache);
+        res.status(200).json(cache);
       } else {
         DistributeWell.find()
           .limit(Number(req.query.limit))
@@ -51,7 +51,7 @@ var DistributeWell = restful.model('DistributeWell',
           cacheMap[field].pop();
           cacheMap[field].unshift(model.toJSON())
         }
-        return res.status(201).json(model);
+        res.status(201).json(model);
       })
       .catch(error => next(error));
   })

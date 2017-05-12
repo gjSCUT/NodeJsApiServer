@@ -29,7 +29,7 @@ var ChlorineAddPool = restful.model('ChlorineAddPool',
     if (req.query.sort === "-createTime" && isNaN(req.query.skip)) {
       var cache = ChlorineAddPool.lasted[req.query.limit];
       if (cache) {
-        return res.status(200).json(cache);
+        res.status(200).json(cache);
       } else {
         ChlorineAddPool.find()
           .limit(Number(req.query.limit))
@@ -52,7 +52,7 @@ var ChlorineAddPool = restful.model('ChlorineAddPool',
           cacheMap[field].pop();
           cacheMap[field].unshift(model.toJSON())
         }
-        return res.status(201).json(model);
+        res.status(201).json(model);
       })
       .catch(error => next(error));
   })

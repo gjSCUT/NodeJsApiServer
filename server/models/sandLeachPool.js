@@ -28,7 +28,7 @@ var SandLeachPool = restful.model('SandLeachPool',
     if (req.query.sort === "-createTime" && isNaN(req.query.skip)) {
       var cache = SandLeachPool.lasted[req.query.limit];
       if (cache) {
-        return res.status(200).json(cache);
+        res.status(200).json(cache);
       } else {
         SandLeachPool.find()
           .limit(Number(req.query.limit))
@@ -51,7 +51,7 @@ var SandLeachPool = restful.model('SandLeachPool',
           cacheMap[field].pop();
           cacheMap[field].unshift(model.toJSON())
         }
-        return res.status(201).json(model);
+        res.status(201).json(model);
       })
       .catch(error => next(error));
   })

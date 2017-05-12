@@ -28,7 +28,7 @@ var SuctionWell = restful.model('SuctionWell',
     if (req.query.sort === "-createTime" && isNaN(req.query.skip)) {
       var cache = SuctionWell.lasted[req.query.limit];
       if (cache) {
-        return res.status(200).json(cache);
+        res.status(200).json(cache);
       } else {
         SuctionWell.find()
           .limit(Number(req.query.limit))
@@ -51,7 +51,7 @@ var SuctionWell = restful.model('SuctionWell',
           cacheMap[field].pop();
           cacheMap[field].unshift(model.toJSON())
         }
-        return res.status(201).json(model);
+        res.status(201).json(model);
       })
       .catch(error => next(error));
   })
