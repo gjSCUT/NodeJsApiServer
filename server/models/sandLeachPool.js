@@ -35,10 +35,12 @@ var SandLeachPool = restful.model('SandLeachPool',
           .sort(req.query.sort)
           .then(users => {
             SandLeachPool.lasted[req.query.limit] = users;
-            res.status(201).json(users);
+            res.status(200).json(users);
           })
           .catch(error => next(error));
       }
+    } else {
+      next();
     }
   })
   .before('post', passport.authenticate('bearer', { session: false }))
@@ -49,7 +51,7 @@ var SandLeachPool = restful.model('SandLeachPool',
         var cacheMap = SandLeachPool.lasted;
         for(var field in cacheMap) {
           cacheMap[field].pop();
-          cacheMap[field].unshift(model.toJSON())
+          cacheMap[field].unshift(model.toJSON());
         }
         res.status(201).json(model);
       })

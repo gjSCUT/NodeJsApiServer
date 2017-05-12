@@ -23,7 +23,7 @@ const apiRoute = require('./routes/api')
 
 /* global constants */
 var options = {
-  pfx: fs.readFileSync('./keys/server.pfx'),
+  pfx: fs.readFileSync('../keys/server.pfx'),
   passphrase: 'guojun@123'
 };
 const server = express();

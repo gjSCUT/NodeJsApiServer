@@ -36,10 +36,12 @@ var ChlorineAddPool = restful.model('ChlorineAddPool',
           .sort(req.query.sort)
           .then(users => {
             ChlorineAddPool.lasted[req.query.limit] = users;
-            res.status(201).json(users);
+            res.status(200).json(users);
           })
           .catch(error => next(error));
       }
+    } else {
+      next();
     }
   })
   .before('post', passport.authenticate('bearer', { session: false }))
@@ -50,7 +52,7 @@ var ChlorineAddPool = restful.model('ChlorineAddPool',
         var cacheMap = ChlorineAddPool.lasted;
         for(var field in cacheMap) {
           cacheMap[field].pop();
-          cacheMap[field].unshift(model.toJSON())
+          cacheMap[field].unshift(model.toJSON());
         }
         res.status(201).json(model);
       })

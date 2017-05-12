@@ -35,10 +35,12 @@ var DepositPool = restful.model('DepositPool',
           .sort(req.query.sort)
           .then(users => {
             DepositPool.lasted[req.query.limit] = users;
-            res.status(201).json(users);
+            res.status(200).json(users);
           })
           .catch(error => next(error));
       }
+    } else {
+      next();
     }
   })
   .before('post', passport.authenticate('bearer', { session: false }))
@@ -49,7 +51,7 @@ var DepositPool = restful.model('DepositPool',
         var cacheMap = DepositPool.lasted;
         for(var field in cacheMap) {
           cacheMap[field].pop();
-          cacheMap[field].unshift(model.toJSON())
+          cacheMap[field].unshift(model.toJSON());
         }
         res.status(201).json(model);
       })

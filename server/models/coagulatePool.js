@@ -36,10 +36,12 @@ var CoagulatePool = restful.model('CoagulatePool',
           .sort(req.query.sort)
           .then(users => {
             CoagulatePool.lasted[req.query.limit] = users;
-            res.status(201).json(users);
+            res.status(200).json(users);
           })
           .catch(error => next(error));
       }
+    } else {
+      next();
     }
   })
   .before('post', passport.authenticate('bearer', { session: false }))
@@ -50,7 +52,7 @@ var CoagulatePool = restful.model('CoagulatePool',
         var cacheMap = CoagulatePool.lasted;
         for(var field in cacheMap) {
           cacheMap[field].pop();
-          cacheMap[field].unshift(model.toJSON())
+          cacheMap[field].unshift(model.toJSON());
         }
         res.status(201).json(model);
       })

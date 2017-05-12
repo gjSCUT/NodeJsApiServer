@@ -45,13 +45,15 @@ var PumpRoomFirst = restful.model('PumpRoomFirst', new mongoose.Schema({
           .then(users => {
             var time2 = new Date().getTime();
             PumpRoomFirst.lasted[req.query.limit] = users;
-            res.status(201).json(users);;
+            res.status(200).json(users);
             var time3 = new Date().getTime();
             console.info("time2 - time1 = " + (time2 - time1));
             console.info("time3 - time2 = " + (time3 - time2));
           })
           .catch(error => next(error));
       }
+    } else {
+      next();
     }
   })
   .before('post', passport.authenticate('bearer', { session: false }))
@@ -62,7 +64,7 @@ var PumpRoomFirst = restful.model('PumpRoomFirst', new mongoose.Schema({
         var cacheMap = PumpRoomFirst.lasted;
         for(var field in cacheMap) {
           cacheMap[field].pop();
-          cacheMap[field].unshift(model.toJSON())
+          cacheMap[field].unshift(model.toJSON());
         }
         res.status(201).json(model);
       })

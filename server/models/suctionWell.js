@@ -35,10 +35,12 @@ var SuctionWell = restful.model('SuctionWell',
           .sort(req.query.sort)
           .then(users => {
             SuctionWell.lasted[req.query.limit] = users;
-            res.status(201).json(users);
+            res.status(200).json(users);
           })
           .catch(error => next(error));
       }
+    } else {
+      next();
     }
   })
   .before('post', passport.authenticate('bearer', { session: false }))
@@ -49,7 +51,7 @@ var SuctionWell = restful.model('SuctionWell',
         var cacheMap = SuctionWell.lasted;
         for(var field in cacheMap) {
           cacheMap[field].pop();
-          cacheMap[field].unshift(model.toJSON())
+          cacheMap[field].unshift(model.toJSON());
         }
         res.status(201).json(model);
       })

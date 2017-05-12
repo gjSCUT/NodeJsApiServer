@@ -10,7 +10,7 @@ exports.config = {
   /**
    * Array of application names.
    */
-  app_name: ['remote server'],
+  app_name: ['local server'],
   /**
    * Your New Relic license key.
    */
