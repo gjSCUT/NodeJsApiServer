@@ -23,11 +23,12 @@ const apiRoute = require('./routes/api')
 
 /* global constants */
 var options = {
-  pfx: fs.readFileSync('../keys/server.pfx'),
+  pfx: fs.readFileSync('./keys/server.pfx'),
   passphrase: 'guojun@123'
 };
 const server = express();
 server.locals.newrelic = newrelic;
+
 /* --- Database --- */
 mongoose.Promise = Promise;
 mongoose.set('debug', false);

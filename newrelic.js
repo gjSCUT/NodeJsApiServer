@@ -10,7 +10,7 @@ exports.config = {
   /**
    * Array of application names.
    */
-  app_name: ['Api Server'],
+  app_name: ['remote server'],
   /**
    * Your New Relic license key.
    */
@@ -21,8 +21,6 @@ exports.config = {
      * issues with the agent, 'info' and higher will impose the least overhead on
      * production applications.
      */
-    level: 'error',
-    directory: '/opt/logs',
-    file_name: 'newrelic.log'
+    level: 'error'
   }
 }

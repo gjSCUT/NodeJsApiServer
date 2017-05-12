@@ -1,4 +1,4 @@
-version: '3'
+version: '2'
 services:
   api:
     command: pm2-docker --watch server/server.js
@@ -17,7 +17,6 @@ services:
       - "443:3001"
     volumes:
       - .:/docker-node-express-boilerplate
-    restart: always
 
   redis:
     image: 'bitnami/redis:latest'
@@ -28,10 +27,10 @@ services:
     restart: always
 
   mongo:
-    image: mongo
-    ports:
-        - "27017:27017"
-    restart: always
+   image: mongo
+   ports:
+     - "27017:27017"
+   restart: always 
 
   lb:
     image: gjscut/loadbalance
