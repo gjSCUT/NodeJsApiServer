@@ -242,7 +242,8 @@ var removeAndCreateToken = function(username, clientId, done) {
   let accesstoken = {
     value: utils.uid(256),
     clientId: clientId,
-    username: username
+    username: username,
+    created: Date.now()
   };
   redis.hmset('accessToken:' + accesstoken.value, accesstoken, function(err) {
     if (err) { return done(err); }
@@ -252,7 +253,8 @@ var removeAndCreateToken = function(username, clientId, done) {
     let refreshToken = {
       value: utils.uid(256),
       clientId: clientId,
-      username: username
+      username: username,
+      created: Date.now()
     };
     redis.hmset('refreshToken:' + refreshToken.value, refreshToken, function(err) {
       if (err) { return done(err); }
@@ -267,13 +269,15 @@ var removeAndCreateToken = function(username, clientId, done) {
 var createTokenWithoutUser = function(clientId, done) {
   let accesstoken = {
     value: utils.uid(256),
-    clientId: clientId
+    clientId: clientId,
+    created: Date.now()
   };
   redis.hmset('accessToken:' + accesstoken.value, accesstoken, function(err) {
     if (err) { return done(err); }
     let refreshToken = {
       value: utils.uid(256),
-      clientId: clientId
+      clientId: clientId,
+      created: Date.now()
     };
     redis.set('accessToken:' + clientId, accesstoken.value, function(err) {
       if (err) { return done(err); }
