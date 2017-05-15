@@ -88,8 +88,11 @@ passport.use(new BearerStrategy(
       if (err) { return done(err); }
       if (!token) { return done(null, false); }
       if( Math.round((Date.now()-token.created) / 1000) > config.get('security').tokenLife ) {
-        redis.del('accessToken:' + accessToken, function(err){
-          if (err) return done(err);
+        redis.del('accessToken:' + token.username + token.clientId, function(err){
+          if (err) done(err);
+        });
+        redis.hdel('accessToken:' + token.value, ['value', 'clientId', 'username', 'created'], function(err) {
+          if (err) done(err);
         });
         return done(null, false, { message: 'Token expired' });
       }

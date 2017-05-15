@@ -105,13 +105,19 @@ server.grant(oauth2orize.grant.code(function(client, redirectURI, user, ares, do
   // clear this user token
   redis.get('accessToken:' + username + clientId, function(err, tokenValue) {
     if (err) return;
-    redis.hdel('accessToken:' + tokenValue, ['value', 'clientId', 'username'], function(err) {
+    redis.del('accessToken:' + username + clientId, function(err){
+      if (err) done(err);
+    });
+    redis.hdel('accessToken:' + tokenValue, ['value', 'clientId', 'username', 'created'], function(err) {
       if (err) done(err);
     });
   });
   redis.get('refreshToken:' + username + clientId, function(err, tokenValue) {
     if (err) return;
-    redis.hdel('refreshToken:' + tokenValue, ['value', 'clientId', 'username'], function(err) {
+    redis.del('refreshToken:' + username + clientId, function(err){
+      if (err) done(err);
+    });
+    redis.hdel('refreshToken:' + tokenValue, ['value', 'clientId', 'username', 'created'], function(err) {
       if (err) return done(err);
     });
   });
@@ -229,13 +235,19 @@ var removeAndCreateToken = function(username, clientId, done) {
   // clear this user token
   redis.get('accessToken:' + username + clientId, function(err, tokenValue) {
     if (err) return;
-    redis.hdel('accessToken:' + tokenValue, ['value', 'clientId', 'username'], function(err) {
+    redis.del('accessToken:' + username + clientId, function(err){
+      if (err) done(err);
+    });
+    redis.hdel('accessToken:' + tokenValue, ['value', 'clientId', 'username', 'created'], function(err) {
       if (err) done(err);
     });
   });
   redis.get('refreshToken:' + username + clientId, function(err, tokenValue) {
     if (err) return;
-    redis.hdel('refreshToken:' + tokenValue, ['value', 'clientId', 'username'], function(err) {
+    redis.del('refreshToken:' + username + clientId, function(err){
+      if (err) done(err);
+    });
+    redis.hdel('refreshToken:' + tokenValue, ['value', 'clientId', 'username', 'created'], function(err) {
       if (err) done(err);
     });
   });
