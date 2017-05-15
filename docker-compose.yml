@@ -19,7 +19,7 @@ services:
       - .:/docker-node-express-boilerplate
 
   redis:
-    image: 'bitnami/redis:latest'
+    image: 'redis:latest'
     ports:
       - "6379:6379"
     volumes:
