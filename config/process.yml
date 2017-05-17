@@ -3,4 +3,5 @@ apps:
     name     : 'Boilerplate API'
     exec_mode: 'cluster'
     instances: 'max'
-    ignore_watch: ['newrelic_agent.log']
+    watch    : ['server/']
+    ignore_watch: ['newrelic_agent.log', 'doc/', '.idea/', 'node-modules', '.git/']

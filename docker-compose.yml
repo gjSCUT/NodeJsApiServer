@@ -1,7 +1,7 @@
 version: '2'
 services:
   api:
-    command: pm2-docker --watch server/server.js
+    command: pm2-docker --watch ./config/process.yml
     image: gjscut/water_watcher_api_server
     environment:
       SERVICE_NAME: api
