@@ -13,7 +13,6 @@ const router = new express.Router();
 
 router.route('/')
   .get(function(req, res, next){
-    console.log('Welcome to API server');
     return res.status(200).json({
       content: 'Welcome to API server',
       copyright: 'Yang Sixuan'

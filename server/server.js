@@ -23,7 +23,7 @@ const apiRoute = require('./routes/api')
 
 /* global constants */
 var options = {
-  pfx: fs.readFileSync('../keys/server.pfx'),
+  pfx: fs.readFileSync('./keys/server.pfx'),
   passphrase: 'guojun@123'
 };
 const server = express();
@@ -42,15 +42,6 @@ server.set('view engine', 'ejs');
 // body parser setup
 server.use(bodyParser.urlencoded({extended: true}));
 server.use(bodyParser.json());
-server.use(cookieParser());
-server.use(session({
-  store: new RedisStore(options),
-  secret: 'keyboard cat',
-  resave: true,
-  saveUninitialized: true
-}));
-server.use(passport.initialize());
-server.use(passport.session());
 
 // error handling specific to body parser only
 server.use((error, request, response, next) => {
@@ -60,6 +51,16 @@ server.use((error, request, response, next) => {
   }
   return next();
 });
+
+server.use(cookieParser());
+server.use(session({
+  store: new RedisStore(options),
+  secret: 'keyboard cat',
+  resave: true,
+  saveUninitialized: true
+}));
+server.use(passport.initialize());
+server.use(passport.session());
 
 // response headers setup
 server.use((request, response, next) => {

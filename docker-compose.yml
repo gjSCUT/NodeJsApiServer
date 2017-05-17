@@ -10,11 +10,12 @@ services:
       NODE_CONFIG_DIR: ./config
       NODE_APP_INSTANCE: ''
     links:
-      - mongo:mongodb
       - redis:redis
+    external_links:
+      - mongo-router:mongodb
     ports:
       - "3000:3000"
-      - "443:3001"
+      - "3001:3001"
     volumes:
       - .:/docker-node-express-boilerplate
 
@@ -30,7 +31,7 @@ services:
    image: mongo
    ports:
      - "27017:27017"
-   restart: always 
+   restart: always
 
   lb:
     image: gjscut/loadbalance
