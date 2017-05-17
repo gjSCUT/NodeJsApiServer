@@ -27,7 +27,7 @@ services:
       - /path/to/redis-persistence:/bitnami/redis
     restart: always
 
-  mongo:
+  mongo-router:
    image: mongo
    ports:
      - "27017:27017"
