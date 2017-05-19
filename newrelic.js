@@ -10,7 +10,7 @@ exports.config = {
   /**
    * Array of application names.
    */
-  app_name: ['local server'],
+  app_name: ['local api server'],
   /**
    * Your New Relic license key.
    */
@@ -21,6 +21,6 @@ exports.config = {
      * issues with the agent, 'info' and higher will impose the least overhead on
      * production applications.
      */
-    level: 'error'
+    level: 'info'
   }
 }
