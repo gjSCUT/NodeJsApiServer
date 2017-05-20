@@ -71,11 +71,11 @@ module.exports.changePassword = function(request, response, next) {
  * Validate the POST request body and create a new Thing
  */
 module.exports.delete = function(request, response, next) {
-  const id = request.param.id;
+  const { username } = request.params;
   return User
-    .remove({_id: id})
+    .remove({username: username})
     .then(user => {
-      redis.hdel('user:' + user.username, ['username', 'password', 'name'], function(err) {
+      redis.hdel('user:' + username, ['username', 'password', 'name'], function(err) {
         if (err) { return next(err); }
       });
       return response.status(200).json(user);
