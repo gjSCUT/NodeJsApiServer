@@ -26,8 +26,12 @@ module.exports.create = function(request, response, next) {
   return User
     .create(newUser)
     .then(user => {
-      redis.hmset('user:' + newUser.username, newUser, function(err) {
-        if (err) { return done(err); }
+      redis.hmset('user:' + newUser.username, {
+        username: newUser.username,
+        password: newUser.password,
+        name: newUser.name
+      }, function(err) {
+        if (err) { return next(err); }
       });
       return response.status(201).json(user)
     })
@@ -49,8 +53,12 @@ module.exports.changePassword = function(request, response, next) {
     return user
       .save()
       .then(updatedUser => {
-        redis.hmset('user:' + user.username, user, function(err) {
-          if (err) { return done(err); }
+        redis.hmset('user:' + user.username, {
+          username: user.username,
+          password: user.password,
+          name: user.name
+        }, function(err) {
+          if (err) { return next(err); }
         });
         return response.status(200).json(updatedUser);
       })
@@ -68,7 +76,7 @@ module.exports.delete = function(request, response, next) {
     .remove({_id: id})
     .then(user => {
       redis.hdel('user:' + user.username, ['username', 'password', 'name'], function(err) {
-        if (err) { return done(err); }
+        if (err) { return next(err); }
       });
       return response.status(200).json(user);
     })
