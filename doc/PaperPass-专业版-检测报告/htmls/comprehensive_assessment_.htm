@@ -1,0 +1,557 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN""http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>PaperPass 最权威论文抄袭检测系统</title>
+<style type="text/css">
+<!--
+user_icon {
+color: #FFFFFF;
+}
+body,td,th {
+font-family: "微软雅黑";
+font-size: 13px;
+}
+h1,h2,h3,h4,h5,h6 {
+font-family: "宋体";
+}
+demo_padding {
+line-height: 30px;
+}
+html
+{
+overflow-x:hidden;
+overflow-y:scroll;
+}
+.getiao_xsd {
+float: left;
+width: 995px;
+display: inline;
+}
+.getiao_wz {
+width: 75px;
+float: left;
+margin-top: 0px;
+margin-left: 0px;
+display: inline;
+}
+.getiao_percent {
+width: 38px;
+float: left;
+margin-top: 0px;
+margin-left: 5px;
+display: inline;
+}
+.getiao img {
+border: 1px solid #666666;
+margin-top: 0px;
+float: left;
+}
+.liebiao {
+border-bottom-width: 1px;
+border-bottom-style: dashed;
+border-bottom-color: #CCCCCC;
+height: 0px;
+margin-top:10px;
+margin-bottom:10px;
+float: left;
+width: 90%;
+}
+.liebiao ul {
+list-style-type: none;
+display: block;
+margin: 0px;
+clear: none;
+}
+.zhengwen {
+padding-right: 15px;
+padding-left: 0px;
+margin-bottom:10px;
+font-size: 13px;
+line-height: 20px;
+color: #666666;
+}
+.zhengwencenter {
+padding-right: 15px;
+padding-left: 0px;
+margin-bottom:10px;
+font-size: 13px;
+line-height: 20px;
+color: #666666;
+text-align:center
+}
+.neikuang {
+background-color: #EBEBEB;
+border: 1px dashed #999999;
+padding-right: 10px;
+padding-left: 10px;
+}
+.shubuno{
+float: left;
+height: 15px;
+width: 19px;
+background-color: #FFFFFF;
+border: 0px solid #999999;
+text-align: center;
+vertical-align: middle;
+display: block;
+font-size: 13px;
+display:inline;
+}
+.shubu{
+float: left;
+height: 15px;
+width: 15px;
+background-color: #FFFFFF;
+border: 1px solid #999999;
+text-align: center;
+vertical-align: middle;
+display: block;
+font-size: 13px;
+display:inline;
+}
+.shubu1{
+float: left;
+background-color: #FFFFFF;
+text-align: center;
+vertical-align: middle;
+font-size: 13px;
+margin-top:4px;
+display:inline;
+}
+.kuang {
+border: 1px solid #999999;
+}
+.red{color:#FF0000}
+.orange{color:#FF6600}
+.green{color:#008000}
+
+a:hover {color:#000000}
+a:active {color:#000000}
+
+a{TEXT-DECORATION:none}
+.baifenbihand
+{
+float: left;
+margin-top:1px;
+display:inline;
+cursor:hand;
+cursor:pointer;
+}
+.baifenbi
+{
+float: left;
+margin-top:1px;
+display:inline;
+}
+.xiangsigif {
+float: left;
+margin-left:5px;
+display:inline;
+}
+
+.xiangsigif img {
+border: 1px solid #666666;
+float: left;
+margin-left:0px;
+margin-right:3px;
+display:inline;
+}
+
+.xiangsigif1 {
+margin-left:0px;
+display:inline;
+}
+
+.xiangsigif1 img {
+border: 1px solid #666666;
+margin-left:0px;
+margin-right:3px;
+display:inline;
+}
+
+-->
+</style>
+<script type="text/javascript">
+function showobj(objIDName) {
+objctlocal = document.getElementById('local'+objIDName);
+objctlocal.setAttribute('style', "display:block;");
+objxiangxi = document.getElementById('xiangxi' + objIDName);
+objxiangxi.setAttribute('style', "display:none;");
+objshouqi = document.getElementById('shouqi' + objIDName);
+objshouqi.setAttribute('style', "display:block;");
+
+}
+function noneobj(objIDName) {
+objctlocal = document.getElementById('local' + objIDName);
+objctlocal.setAttribute('style', "display:none;");
+objxiangxi = document.getElementById('xiangxi' + objIDName);
+objxiangxi.setAttribute('style', "display:block;");
+objshouqi = document.getElementById('shouqi' + objIDName);
+objshouqi.setAttribute('style', "display:none;");
+}
+</script>
+</head>
+<body>
+
+
+
+<table width="100%" cellpadding="3" cellspacing="3" style="margin-bottom:15px;border: 1px solid #C0C0C0" bordercolorlight="#FFFFFF" bordercolordark="#FFFFFF" >
+<tr>
+<td align="left">
+<b>
+<font color="#666666">总体信息</font></b>
+</td>
+</tr>
+
+
+<tr>
+<td align="left">
+<div class="getiao">
+<div class="getiao_xsd">
+<div class="getiao_wz" style="width: 94px; height: 13px"><font color="#666666">&nbsp;&nbsp;&nbsp;总体相似度：</font></div>
+<img src="../images/percent_1.gif" width="90" height="15"/><div class="getiao_percent"><span  class='green' >24%</a></div>
+<div class="getiao_wz" style="width: 520px; height: 13px"><font color="#666666">总体相似度是指本地库、互联网的综合比对结果</font></div>
+</div>
+</div>
+</td>
+</tr>
+
+<tr>
+<td align="left">
+<div class="getiao">
+<div class="getiao_xsd">
+<div class="getiao_wz" style="width: 94px; height: 13px"><font color="#666666">本地库相似度：</font></div>
+<img src="../images/percent_local.gif" width="90" height="15"/><div class="getiao_percent"><span  class='green' >11%</a></div>
+<div class="getiao_wz" style="width: 520px; height: 13px"><font color="#666666">本地库相似度是指论文与学术期刊、学位论文、会议论文的比对结果</font></div>
+</div>
+</div>
+</td>
+</tr>
+
+<tr>
+<td align="left">
+<div class="getiao">
+<div class="getiao_xsd">
+<div class="getiao_wz" style="width: 94px; height: 13px"><font color="#666666">期刊库相似度：</font></div>
+<img src="../images/percent_qikan.gif" width="90" height="15"/><div class="getiao_percent"><span  class='green' >7%</a></div>
+<div class="getiao_wz" style="width: 520px; height: 13px"><font color="#666666">期刊库相似度是指论文与学术期刊库的比对结果</font></div>
+</div>
+</div>
+</td>
+</tr>
+
+<tr>
+<td align="left">
+<div class="getiao">
+<div class="getiao_xsd">
+<div class="getiao_wz" style="width: 94px; height: 13px"><font color="#666666">学位库相似度：</font></div>
+<img src="../images/percent_xuewei.gif" width="90" height="15"/><div class="getiao_percent"><span  class='green' >8%</a></div>
+<div class="getiao_wz" style="width: 520px; height: 13px"><font color="#666666">学位库相似度是指论文与学位论文库的比对结果</font></div>
+</div>
+</div>
+</td>
+</tr>
+
+<tr>
+<td align="left">
+<div class="getiao">
+<div class="getiao_xsd">
+<div class="getiao_wz" style="width: 94px; height: 13px"><font color="#666666">会议库相似度：</font></div>
+<img src="../images/percent_huiyi.gif" width="90" height="15"/><div class="getiao_percent"><span  class='green' >1%</a></div>
+<div class="getiao_wz" style="width: 520px; height: 13px"><font color="#666666">会议库相似度是指论文与会议论文库的比对结果</font></div>
+</div>
+</div>
+</td>
+</tr>
+
+<tr style="display:none;">
+<td align="left">
+<div class="getiao">
+<div class="getiao_xsd">
+<div class="getiao_wz" style="width: 94px; height: 13px"><font color="#666666">自建库相似度：</font></div>
+<img src="../images/percent_zijian.gif" width="90" height="15"/><div class="getiao_percent"><span  class='green' >0%</a></div>
+<div class="getiao_wz" style="width: 520px; height: 13px"><font color="#666666">自建库相似度是指论文与自建库的比对结果</font></div>
+</div>
+</div>
+</td>
+</tr>
+
+<tr style="display:none;">
+<td align="left">
+<div class="getiao">
+<div class="getiao_xsd">
+<div class="getiao_wz" style="width: 94px; height: 13px"><font color="#666666">图书库相似度：</font></div>
+<img src="../images/percent_tushu.gif" width="90" height="15"/><div class="getiao_percent"><span  class='green' >0%</a></div>
+<div class="getiao_wz" style="width: 520px; height: 13px"><font color="#666666">图书库相似度是指论文与图书库的比对结果</font></div>
+</div>
+</div>
+</td>
+</tr>
+
+
+<tr>
+<td align="left">
+<div class="getiao">
+<div class="getiao_xsd">
+<div class="getiao_wz" style="width: 94px; height: 13px"><font color="#666666">互联网相似度：</font></div>
+<img src="../images/percent_net.gif" width="90" height="15"/><div class="getiao_percent"><span  class='green' >18%</a></div>
+<div class="getiao_wz" style="width: 520px; height: 13px"><font color="#666666">互联网相似度是指论文与互联网资源的比对结果</font></div>
+</div>
+</div>
+</td>
+</tr>
+
+<tr>
+<td align="left">
+<font color="#666666">相似度计算公式&nbsp;:&nbsp;
+<font color="#666666">（句子1相似度+句子2相似度+...+句子n相似度）/&nbsp;n</font>，句子相似度范围0.0~1.0，绿色句子相似度按照0计算。
+</td>
+</tr>
+
+<tr>
+<td align="left">
+</td>
+</tr>
+
+<tr>
+<td align="left">
+<font color="#666666">字数<b>:</b>32036</font>&nbsp;&nbsp;
+<font color="#666666">词语数<b>:</b>10990</font>&nbsp;&nbsp;
+<font color="#666666">句子数<b>:</b>754</font>&nbsp;&nbsp;
+<font color="#666666">段落数<b>:</b>284</font>&nbsp;&nbsp;
+<font color="#666666">&nbsp;&nbsp;注：系统按照Word字数统计里面的字符数（不计空格）计算！</font>
+</td>
+</tr>
+
+<tr>
+<td align="left">
+</td>
+</tr>
+
+<tr>
+<td align="left">
+<font color="#666666">比对库范围<b>：</b>学术期刊（1990-2016）、学位论文（硕博库1990-2016）、会议论文（1990-2015）、互联网资源</font><br><br>
+<font color="#666666">检测报告编号<b>：</b>591FE4AC3124F0CAP</font>&nbsp;&nbsp;
+<a href="http://www.paperpass.com/check" target="_blank"><b>查询真伪</b></a>
+<div style="display:none;">
+<br><br><font color=red size=3>不支持官网（www.paperpass.com）真伪查询的检测报告均为假货，谨防上当！</font><br><br>
+</div>
+</td>
+</tr>
+
+</table>
+
+
+<table width="100%" cellpadding="3" cellspacing="3" style="margin-bottom:15px;border: 1px solid #C0C0C0" bordercolorlight="#FFFFFF" bordercolordark="#FFFFFF" >
+<tr>
+<td align="left" colspan="2">
+<b>
+<font color="#666666">句子信息</font></b></td>
+</tr>
+<tr>
+<td align="left" colspan="2">
+<font color="#666666">
+句子个数<b>:</b>754&nbsp;&nbsp; 平均句长<b>:</b>43字&nbsp;&nbsp;
+最大句长<b>:</b>147字&nbsp;&nbsp; 最小句长<b>:</b>3字&nbsp;&nbsp;
+</font></td>
+</tr>
+<tr>
+<td align="left" colspan="2">
+<img src="../images/Sentence.png" border="0">
+</td>
+</tr>
+<tr>
+<td align="left" colspan="2">
+<img src="../images/Sentence.jpg" border="0">
+</td>
+</tr>
+</table>
+
+
+<table width="100%" cellpadding="1" cellspacing="2" style="margin-bottom:15px;border: 1px solid #C0C0C0" bordercolorlight="#FFFFFF" bordercolordark="#FFFFFF" >
+<tr>
+<td align="left" width="100%">
+<font color="#666666"><b>本地库相似资源（学术期刊、学位论文、会议论文）</font>
+</td>
+</tr>
+<tr>
+<td align="left" width="100%">
+<div class="shubu">1</div>
+<div class="xiangsigif"><img src="../images/1.gif"></div>
+<div class="baifenbi"><span  class='orange' ><span  class='green' >1</span></span><font color="#666666">%</font>&nbsp;</div>
+<div id="xiangxi1" style="display:block" class="baifenbihand" onclick="showobj('1')" >[详细↓]</div>
+<div id="shouqi1" style="display:none" class="baifenbihand" onclick="noneobj('1')" >[收起↑]</div>
+<div class="baifenbi">&nbsp;&nbsp;<font color="#666666">来源：</font>学术期刊 《无线互联科技》 2012年9期</div>
+<div class="baifenbi">&nbsp;&nbsp;<font color="#666666">作者：</font>王心妍</div>
+<div class="baifenbi">&nbsp;&nbsp;<font color="#666666">篇名</font>：《Memcached和Redis在高速缓存方面的应用》</div>
+
+</td>
+</tr>
+<tr id="local1" style="display:none">
+<td align="left" width="100%">
+<div class="shubuno"></div><font color="#666666">来源<b>：</b></font>学术期刊&nbsp;&nbsp;&nbsp;&nbsp;<br><div class="shubuno"></div><font color="#666666">篇名<b>：</b></font>《Memcached和Redis在高速缓存方面的应用》&nbsp;&nbsp;&nbsp;&nbsp;<br><div class="shubuno"></div><font color="#666666">作者<b>：</b></font>王心妍&nbsp;&nbsp;&nbsp;&nbsp;<br><div class="shubuno"></div><font color="#666666">作者单位<b>：</b></font>西安培华学院,陕西 西安 710000&nbsp;&nbsp;&nbsp;&nbsp;<br><div class="shubuno"></div><font color="#666666">被引次数<b>：</b></font>1次（统计时间：2015年8月）&nbsp;&nbsp;&nbsp;&nbsp;<br><div class="shubuno"></div><font color="#666666">页码<b>：</b></font>P8—P9&nbsp;&nbsp;&nbsp;&nbsp;<br><div class="shubuno"></div><font color="#666666">期刊名称<b>：</b></font>《无线互联科技》&nbsp;&nbsp;&nbsp;&nbsp;<br><div class="shubuno"></div><font color="#666666">出版时间<b>：</b></font>2012年9期&nbsp;&nbsp;&nbsp;&nbsp;<br><div class="shubuno"></div><font color="#666666">ISSN<b>：</b></font>1672-6944&nbsp;&nbsp;&nbsp;&nbsp;<br><div class="shubuno"></div><font color="#666666">关键词<b>：</b></font>内存数据库 Memcached Redis&nbsp;&nbsp;&nbsp;&nbsp;<br><br>
+</td>
+</tr>
+
+<tr>
+<td align="left" width="100%">
+<div class="shubu">2</div>
+<div class="xiangsigif"><img src="../images/1.gif"></div>
+<div class="baifenbi"><span  class='orange' ><span  class='green' >1</span></span><font color="#666666">%</font>&nbsp;</div>
+<div id="xiangxi2" style="display:block" class="baifenbihand" onclick="showobj('2')" >[详细↓]</div>
+<div id="shouqi2" style="display:none" class="baifenbihand" onclick="noneobj('2')" >[收起↑]</div>
+<div class="baifenbi">&nbsp;&nbsp;<font color="#666666">来源：</font>学术期刊 《软件》 2012年12期</div>
+<div class="baifenbi">&nbsp;&nbsp;<font color="#666666">作者：</font>刘岩 王晶 王纯</div>
+<div class="baifenbi">&nbsp;&nbsp;<font color="#666666">篇名</font>：《内存数据库在点击多方通话中应用》</div>
+
+</td>
+</tr>
+<tr id="local2" style="display:none">
+<td align="left" width="100%">
+<div class="shubuno"></div><font color="#666666">来源<b>：</b></font>学术期刊&nbsp;&nbsp;&nbsp;&nbsp;<br><div class="shubuno"></div><font color="#666666">篇名<b>：</b></font>《内存数据库在点击多方通话中应用》&nbsp;&nbsp;&nbsp;&nbsp;<br><div class="shubuno"></div><font color="#666666">作者<b>：</b></font>刘岩 王晶 王纯&nbsp;&nbsp;&nbsp;&nbsp;<br><div class="shubuno"></div><font color="#666666">作者单位<b>：</b></font>北京邮电大学网络技术研究院,北京,100876；北京邮电大学网络技术研究院网络智能中心,北京,100876&nbsp;&nbsp;&nbsp;&nbsp;<br><div class="shubuno"></div><font color="#666666">参考文献<b>：</b></font>10篇&nbsp;&nbsp;&nbsp;&nbsp;<br><div class="shubuno"></div><font color="#666666">页码<b>：</b></font>P188—P191&nbsp;&nbsp;&nbsp;&nbsp;<br><div class="shubuno"></div><font color="#666666">页数<b>：</b></font>4页&nbsp;&nbsp;&nbsp;&nbsp;<br><div class="shubuno"></div><font color="#666666">分类号<b>：</b></font>P315.69&nbsp;&nbsp;&nbsp;&nbsp;<br><div class="shubuno"></div><font color="#666666">机标分类号<b>：</b></font>TP3 TN9&nbsp;&nbsp;&nbsp;&nbsp;<br><div class="shubuno"></div><font color="#666666">基金项目<b>：</b></font>国家自然科学基金(61072057,61101119,61121001,61271019,60902051);长江学者和创新团队发展计划资助(IRT1049);国家科技重大专项(2011ZX03002-001-01,移动互联网总体架构研究)&nbsp;&nbsp;&nbsp;&nbsp;<br><div class="shubuno"></div><font color="#666666">期刊名称<b>：</b></font>《软件》&nbsp;&nbsp;&nbsp;&nbsp;<br><div class="shubuno"></div><font color="#666666">出版时间<b>：</b></font>2012年12期&nbsp;&nbsp;&nbsp;&nbsp;<br><div class="shubuno"></div><font color="#666666">ISSN<b>：</b></font>1003-6970&nbsp;&nbsp;&nbsp;&nbsp;<br><div class="shubuno"></div><font color="#666666">关键词<b>：</b></font>IMS点击多方通话 Redis&nbsp;&nbsp;&nbsp;&nbsp;<br><br>
+</td>
+</tr>
+
+<tr>
+<td align="left" width="100%">
+<div class="shubu">3</div>
+<div class="xiangsigif"><img src="../images/1.gif"></div>
+<div class="baifenbi"><span  class='orange' ><span  class='green' >1</span></span><font color="#666666">%</font>&nbsp;</div>
+<div id="xiangxi3" style="display:block" class="baifenbihand" onclick="showobj('3')" >[详细↓]</div>
+<div id="shouqi3" style="display:none" class="baifenbihand" onclick="noneobj('3')" >[收起↑]</div>
+<div class="baifenbi">&nbsp;&nbsp;<font color="#666666">来源：</font>学位论文 浙江大学 2016</div>
+<div class="baifenbi">&nbsp;&nbsp;<font color="#666666">作者：</font>朱爱民</div>
+<div class="baifenbi">&nbsp;&nbsp;<font color="#666666">篇名</font>：《跨平台移动医疗应用的数据保护方案的设计与实现》</div>
+
+</td>
+</tr>
+<tr id="local3" style="display:none">
+<td align="left" width="100%">
+<div class="shubuno"></div><font color="#666666">来源<b>：</b></font>学位论文&nbsp;&nbsp;&nbsp;&nbsp;<br><div class="shubuno"></div><font color="#666666">篇名<b>：</b></font>《跨平台移动医疗应用的数据保护方案的设计与实现》&nbsp;&nbsp;&nbsp;&nbsp;<br><div class="shubuno"></div><font color="#666666">作者<b>：</b></font>朱爱民&nbsp;&nbsp;&nbsp;&nbsp;<br><div class="shubuno"></div><font color="#666666">学科专业<b>：</b></font>生物医学工程领域&nbsp;&nbsp;&nbsp;&nbsp;<br><div class="shubuno"></div><font color="#666666">授予学位<b>：</b></font>硕士&nbsp;&nbsp;&nbsp;&nbsp;<br><div class="shubuno"></div><font color="#666666">导师姓名<b>：</b></font>田丽丽&nbsp;&nbsp;&nbsp;&nbsp;<br><div class="shubuno"></div><font color="#666666">学位授予单位<b>：</b></font>浙江大学&nbsp;&nbsp;&nbsp;&nbsp;<br><div class="shubuno"></div><font color="#666666">学位年度<b>：</b></font>2016&nbsp;&nbsp;&nbsp;&nbsp;<br><br>
+</td>
+</tr>
+
+<tr>
+<td align="left" width="100%">
+<div class="shubu">4</div>
+<div class="xiangsigif"><img src="../images/1.gif"></div>
+<div class="baifenbi"><span  class='orange' ><span  class='green' >1</span></span><font color="#666666">%</font>&nbsp;</div>
+<div id="xiangxi4" style="display:block" class="baifenbihand" onclick="showobj('4')" >[详细↓]</div>
+<div id="shouqi4" style="display:none" class="baifenbihand" onclick="noneobj('4')" >[收起↑]</div>
+<div class="baifenbi">&nbsp;&nbsp;<font color="#666666">来源：</font>学位论文 南京邮电大学 2016</div>
+<div class="baifenbi">&nbsp;&nbsp;<font color="#666666">作者：</font>朱峰</div>
+<div class="baifenbi">&nbsp;&nbsp;<font color="#666666">篇名</font>：《基于JSON的互联网异构数据整合的应用研究》</div>
+
+</td>
+</tr>
+<tr id="local4" style="display:none">
+<td align="left" width="100%">
+<div class="shubuno"></div><font color="#666666">来源<b>：</b></font>学位论文&nbsp;&nbsp;&nbsp;&nbsp;<br><div class="shubuno"></div><font color="#666666">篇名<b>：</b></font>《基于JSON的互联网异构数据整合的应用研究》&nbsp;&nbsp;&nbsp;&nbsp;<br><div class="shubuno"></div><font color="#666666">作者<b>：</b></font>朱峰&nbsp;&nbsp;&nbsp;&nbsp;<br><div class="shubuno"></div><font color="#666666">分类号<b>：</b></font>TP311.13&nbsp;&nbsp;&nbsp;&nbsp;<br><div class="shubuno"></div><font color="#666666">学科专业<b>：</b></font>计算机应用&nbsp;&nbsp;&nbsp;&nbsp;<br><div class="shubuno"></div><font color="#666666">授予学位<b>：</b></font>硕士&nbsp;&nbsp;&nbsp;&nbsp;<br><div class="shubuno"></div><font color="#666666">导师姓名<b>：</b></font>宗平&nbsp;&nbsp;&nbsp;&nbsp;<br><div class="shubuno"></div><font color="#666666">学位授予单位<b>：</b></font>南京邮电大学&nbsp;&nbsp;&nbsp;&nbsp;<br><div class="shubuno"></div><font color="#666666">学位年度<b>：</b></font>2016&nbsp;&nbsp;&nbsp;&nbsp;<br><div class="shubuno"></div><font color="#666666">关键词<b>：</b></font>互联网 异构数据 整合技术 交换格式 中间件 模式映射&nbsp;&nbsp;&nbsp;&nbsp;<br><br>
+</td>
+</tr>
+
+<tr>
+<td align="left" width="100%">
+<div class="shubu">5</div>
+<div class="xiangsigif"><img src="../images/1.gif"></div>
+<div class="baifenbi"><span  class='orange' ><span  class='green' >1</span></span><font color="#666666">%</font>&nbsp;</div>
+<div id="xiangxi5" style="display:block" class="baifenbihand" onclick="showobj('5')" >[详细↓]</div>
+<div id="shouqi5" style="display:none" class="baifenbihand" onclick="noneobj('5')" >[收起↑]</div>
+<div class="baifenbi">&nbsp;&nbsp;<font color="#666666">来源：</font>学位论文 中国海洋大学 2013</div>
+<div class="baifenbi">&nbsp;&nbsp;<font color="#666666">作者：</font>郭宗辉</div>
+<div class="baifenbi">&nbsp;&nbsp;<font color="#666666">篇名</font>：《传感器服务平台的设计与实现》</div>
+
+</td>
+</tr>
+<tr id="local5" style="display:none">
+<td align="left" width="100%">
+<div class="shubuno"></div><font color="#666666">来源<b>：</b></font>学位论文&nbsp;&nbsp;&nbsp;&nbsp;<br><div class="shubuno"></div><font color="#666666">篇名<b>：</b></font>《传感器服务平台的设计与实现》&nbsp;&nbsp;&nbsp;&nbsp;<br><div class="shubuno"></div><font color="#666666">作者<b>：</b></font>郭宗辉&nbsp;&nbsp;&nbsp;&nbsp;<br><div class="shubuno"></div><font color="#666666">学科专业<b>：</b></font>信号与信息处理&nbsp;&nbsp;&nbsp;&nbsp;<br><div class="shubuno"></div><font color="#666666">授予学位<b>：</b></font>硕士&nbsp;&nbsp;&nbsp;&nbsp;<br><div class="shubuno"></div><font color="#666666">导师姓名<b>：</b></font>姬光荣&nbsp;&nbsp;&nbsp;&nbsp;<br><div class="shubuno"></div><font color="#666666">学位授予单位<b>：</b></font>中国海洋大学&nbsp;&nbsp;&nbsp;&nbsp;<br><div class="shubuno"></div><font color="#666666">学位年度<b>：</b></font>2013&nbsp;&nbsp;&nbsp;&nbsp;<br><br>
+</td>
+</tr>
+
+
+</table>
+
+<table width="100%" cellpadding="1" cellspacing="2" style="margin-bottom:15px;border: 1px solid #C0C0C0" bordercolorlight="#FFFFFF" bordercolordark="#FFFFFF" >
+<tr>
+<td align="left" width="100%">
+<font color="#666666"><b>互联网相似资源</b></font>
+</td>
+</tr>
+<tr>
+<td align="left" width="100%">
+<div class="shubu">1</div>
+<div class="xiangsigif"><img src="../images/3.gif"></div>
+<div class="baifenbi"><span  class='orange' ><span  class='green' >3</span></span><font color="#666666">%</font></div>
+<div class="baifenbi">&nbsp;&nbsp;<font color="#666666">来源：</font>互联网</div>
+<div class="baifenbi">&nbsp;&nbsp;<font color="#666666">标题<b>:</b></font>《从数据库管理系统选型开始 - 高山峻岭        - 博客频道 ...》</div>
+<div class="baifenbi"><img src="../images/htm.gif">&nbsp;</div>
+<div class="baifenbi"><a target='_blank' href=http://blog.csdn.net/gaojunling518/article/details/46516413?locationNum=5&fps=1>查看网页</a></div>
+</td>
+</tr>
+<tr>
+
+<tr>
+<td align="left" width="100%">
+<div class="shubu">2</div>
+<div class="xiangsigif"><img src="../images/2.gif"></div>
+<div class="baifenbi"><span  class='orange' ><span  class='green' >2</span></span><font color="#666666">%</font></div>
+<div class="baifenbi">&nbsp;&nbsp;<font color="#666666">来源：</font>互联网</div>
+<div class="baifenbi">&nbsp;&nbsp;<font color="#666666">标题<b>:</b></font>《容器集群管理工具各项对比 - V2EX》</div>
+<div class="baifenbi"><img src="../images/htm.gif">&nbsp;</div>
+<div class="baifenbi"><a target='_blank' href=http://scholar.google.com/schhp?hl=zh-CN&as_sdt=6800906a574aa9f80abcd8d4ea57e7e8>查看网页</a></div>
+</td>
+</tr>
+<tr>
+
+<tr>
+<td align="left" width="100%">
+<div class="shubu">3</div>
+<div class="xiangsigif"><img src="../images/1.gif"></div>
+<div class="baifenbi"><span  class='orange' ><span  class='green' >1</span></span><font color="#666666">%</font></div>
+<div class="baifenbi">&nbsp;&nbsp;<font color="#666666">来源：</font>互联网</div>
+<div class="baifenbi">&nbsp;&nbsp;<font color="#666666">标题<b>:</b></font>《addToSeturl first根据资源文档的排序获取第一个文档数...》</div>
+<div class="baifenbi"><img src="../images/htm.gif">&nbsp;</div>
+<div class="baifenbi"><a target='_blank' href=http://www.docin.com/p-1001546945-f6.html>查看网页</a></div>
+</td>
+</tr>
+<tr>
+
+
+</table>
+
+<table width="100%" cellpadding="3" cellspacing="3" style="margin-bottom:15px;border: 1px solid #C0C0C0" bordercolorlight="#FFFFFF" bordercolordark="#FFFFFF" >
+<tr>
+<td align="left" colspan="2">
+<b>
+<font color="#666666">如何识别假冒的检测报告？</font></b></td>
+</tr>
+<tr>
+<td align="left" colspan="2">
+<font color="#666666">
+一：比对库只有网络资源的均为假货，正品检测报告都是经过大数据量的本地库
+（9000万篇学术期刊和学位论文）详细比对生成，检测结果有详细的期刊和学位论文出处。假的检测报告用网络比对结果坑害消费者，导致其论文最终没有通过审核。<br><br>
+
+二：不支持官网真伪验证（<a href="http://www.paperpass.com/check" target="_blank">http://www.paperpass.com/check</a>）的均为假货。<br><br>
+
+三：请认准PaperPass这个名称，有的假冒检测报告用以Paper开头的其他名称迷惑消费者。<br><br>
+
+真诚希望您能够将此信息转告您的朋友和同学，以防被骗！
+</font></td>
+</tr>
+</table>
+
+
+<div style="margin-bottom:100px"></div>
+<div class="zhengwencenter">
+<p>
+检测报告由<a href="http://www.paperpass.com/" target="_blank">PaperPass</a>文献相似度检测系统生成
+</p>
+<p>
+Copyright © 2007-2017 PaperPass
+</p>
+</div>
+<div style="margin-bottom:400px"></div>
+</body>
+</html>
