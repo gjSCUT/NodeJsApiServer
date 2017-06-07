@@ -7,7 +7,8 @@ const passport = require('passport')
   , ClientPasswordStrategy = require('passport-oauth2-client-password').Strategy
   , BearerStrategy = require('passport-http-bearer').Strategy
   , utils = require('../helpers/utils')
-  , config = require('config');
+  , config = require('config')
+  , User = require('../models/user');
 const redisModule = require('redis'),
   redis = redisModule.createClient(6379, 'redis');
 
@@ -17,8 +18,18 @@ passport.serializeUser(function(user, done) {
 
 passport.deserializeUser(function(username, done) {
   redis.hgetall('user:' + username, function(err, user) {
-    if (err) { return done(err); }
-    if (!user) { return done(null, false, { message: 'Unknow User' }); }
+    if (err || !user) {
+      User.findOne({username: username}, function(err, newUser) {
+        if (err) { return done(err); }
+        if (!newUser) { return done(null, false, { message: 'Unknow User' }); }
+        redis.hmset('user:' + newUser.username, {
+          username: newUser.username,
+          password: newUser.password,
+          name: newUser.name
+        });
+        return done(null, newUser);
+      });
+    }
     return done(null, user);
   });
 });
@@ -33,8 +44,19 @@ passport.deserializeUser(function(username, done) {
 passport.use(new LocalStrategy(
   function(username, password, done) {
     redis.hgetall('user:' + username, function(err, user) {
-      if (err) { return done(err); }
-      if (!user) { return done(null, false, { message: 'Unknow User' }); }
+      if (err || !user) {
+        User.findOne({username: username}, function(err, newUser) {
+          if (err) { return done(err); }
+          if (!newUser) { return done(null, false, { message: 'Unknow User' }); }
+          if (!utils.validEncrypt(password, newUser.password)) { return done(null, false); }
+          redis.hmset('user:' + newUser.username, {
+            username: newUser.username,
+            password: newUser.password,
+            name: newUser.name
+          });
+          return done(null, newUser);
+        });
+      }
       if (!utils.validEncrypt(password, user.password)) { return done(null, false); }
       return done(null, user);
     });
@@ -98,9 +120,23 @@ passport.use(new BearerStrategy(
       }
 
       if (token.username != null) {
-        redis.hgetall('user:' + token.username, function(err, user) {
-          if (err) { return done(err); }
-          if (!user) { return done(null, false, { message: 'Unknow User' }); }
+        redis.hgetall('user:' + username, function(err, user) {
+          if (err || !user) {
+            User.findOne({username: username}, function (err, newUser) {
+              if (err) {
+                return done(err);
+              }
+              if (!newUser) {
+                return done(null, false, {message: 'Unknow User'});
+              }
+              redis.hmset('user:' + newUser.username, {
+                username: newUser.username,
+                password: newUser.password,
+                name: newUser.name
+              });
+              return done(null, newUser, { scope: '*' });
+            });
+          }
           return done(null, user, { scope: '*' });
         });
       } else {

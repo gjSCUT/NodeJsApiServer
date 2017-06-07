@@ -55,8 +55,7 @@ module.exports.changePassword = function(request, response, next) {
       .then(updatedUser => {
         redis.hmset('user:' + user.username, {
           username: user.username,
-          password: user.password,
-          name: user.name
+          password: user.password
         }, function(err) {
           if (err) { return next(err); }
         });
