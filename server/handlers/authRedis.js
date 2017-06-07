@@ -120,9 +120,9 @@ passport.use(new BearerStrategy(
       }
 
       if (token.username != null) {
-        redis.hgetall('user:' + username, function(err, user) {
+        redis.hgetall('user:' + token.username, function(err, user) {
           if (err || !user) {
-            User.findOne({username: username}, function (err, newUser) {
+            User.findOne({username: token.username}, function (err, newUser) {
               if (err) {
                 return done(err);
               }
