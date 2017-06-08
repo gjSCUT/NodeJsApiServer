@@ -63,7 +63,7 @@ redis.hmset('client:c#', {
   clientId: 'c#',
   clientSecret: '123456',
   name: 'c# client'
-}, function(err) { if (err) { return done(err); }});
+}, function(err) { if (err) { console.log(err); }});
 redis.hmset('client:web', {
   clientId: 'web',
   clientSecret: '123456',

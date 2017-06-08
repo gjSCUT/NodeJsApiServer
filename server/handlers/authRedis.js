@@ -29,8 +29,9 @@ passport.deserializeUser(function(username, done) {
         });
         return done(null, newUser);
       });
+    } else {
+      return done(null, user);
     }
-    return done(null, user);
   });
 });
 
@@ -56,9 +57,10 @@ passport.use(new LocalStrategy(
           });
           return done(null, newUser);
         });
+      } else {
+        if (!utils.validEncrypt(password, user.password)) { return done(null, false); }
+        return done(null, user);
       }
-      if (!utils.validEncrypt(password, user.password)) { return done(null, false); }
-      return done(null, user);
     });
   }
 ));
@@ -136,8 +138,9 @@ passport.use(new BearerStrategy(
               });
               return done(null, newUser, { scope: '*' });
             });
+          } else {
+            return done(null, user, {scope: '*'});
           }
-          return done(null, user, { scope: '*' });
         });
       } else {
         redis.hgetall('client:' + token.clientId, function(err, client) {
