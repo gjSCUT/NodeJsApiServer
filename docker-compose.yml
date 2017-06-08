@@ -35,7 +35,6 @@ services:
 
   lb:
     image: gjscut/loadbalance
-    build: config/consule
     links:
       - api
     ports:
